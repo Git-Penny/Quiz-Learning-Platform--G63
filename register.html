@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Sign Up - Quizr</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="auth-body">
+    <div class="auth-wrapper">
+        <!-- Signup Form -->
+        <div class="form-container">
+            <div class="auth-logo">
+                <div class="logo">
+                    <img src="images/QUIZR (2).png" alt="Quizr Logo">
+                    <span>Quizr</span>
+                </div>
+                <p>Join Our Learning Community</p>
+            </div>
+            
+            <h2>Create Account</h2>
+            <form>
+                <div class="form-group">
+                    <input type="text" placeholder="Full Name" required />
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="form-group">
+                    <input type="email" placeholder="Email" required />
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <div class="form-group">
+                    <input type="password" placeholder="Password" required />
+                    <i class="fas fa-lock"></i>
+                </div>
+                <div class="form-group">
+                    <input type="password" placeholder="Confirm Password" required />
+                    <i class="fas fa-lock"></i>
+                </div>
+                <label class="accept-terms">
+                    <input type="checkbox" required /> I accept the <a href="#">terms and conditions</a>
+                </label>
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-user-plus"></i> Sign Up
+                </button>
+
+                <div class="divider">OR</div>
+                <div class="social-login-label">Sign up with:</div>
+                
+                <div class="social-login">
+                    <a href="#" class="social-btn google" title="Sign up with Google">
+                        <i class="fab fa-google"></i>
+                        <span>Google</span>
+                    </a>
+                </div>
+            </form>
+        </div>
+        <!-- Right side toggle -->
+        <div class="toggle-container">
+            <h2>Already have an account?</h2>
+            <p>Welcome back! Sign in to continue your learning journey.</p>
+            <a href="login.html" class="switch-btn">Sign In</a>
+        </div>
+    </div>
+    <script>
+    document.querySelector('form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const email = document.querySelector('input[type="email"]').value;
+        const password = document.querySelector('input[type="password"]').value;
+        
+        if (email && password) {
+            // Show loading state
+            const button = this.querySelector('.submit-btn');
+            const originalText = button.innerHTML;
+            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating Account...';
+            button.disabled = true;
+            
+            // Simulate API call
+            setTimeout(() => {
+                alert('✅ Account created successfully!');
+                window.location.href = 'dashboard.html';
+            }, 1500);
+        } else {
+            alert('❌ Please fill in all fields.');
+        }
+    });
+</script>
+</body>
+</html>

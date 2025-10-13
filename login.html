@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Login - Quizr</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="auth-body">
+    <div class="auth-wrapper">
+        <!-- Login Form -->
+        <div class="form-container">
+            <div class="auth-logo">
+                <div class="logo">
+                    <img src="images/QUIZR (2).png" alt="Quizr Logo">
+                    <span>Quizr</span>
+                </div>
+                <p>Master Namibian History</p>
+            </div>
+            
+            <h2>Welcome Back!</h2>
+            <form>
+                <div class="form-group">
+                    <input type="email" placeholder="Email or username" required />
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <div class="form-group">
+                    <input type="password" placeholder="Password" required />
+                    <i class="fas fa-lock"></i>
+                </div>
+                <a href="forgot-password.html" class="forgot-password">Forgot password?</a>
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+                <div class="divider">OR</div>
+                <div class="social-login-label">Sign in with:</div>
+
+                <div class="social-login">
+                    <a href="#" class="social-btn google" title="Sign in with Google">
+                        <i class="fab fa-google"></i>
+                        <span>Google</span>
+                    </a>
+                    <a href="#" class="social-btn facebook" title="Sign in with Facebook">
+                        <i class="fab fa-facebook-f"></i>
+                        <span>Facebook</span>
+                    </a>
+                </div>
+            </form>
+        </div>
+
+        <!-- Right side toggle -->
+        <div class="toggle-container">
+            <h2>New to Quizr?</h2>
+            <p>Join our learning community and start exploring Namibian history today!</p>
+            <a href="register.html" class="switch-btn">Create Account</a>
+        </div>
+    </div>
+
+    <script>
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.querySelector('input[type="email"]').value;
+            const password = document.querySelector('input[type="password"]').value;
+            
+            if (email && password) {
+                // Show loading state
+                const button = this.querySelector('.submit-btn');
+                const originalText = button.innerHTML;
+                button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing In...';
+                button.disabled = true;
+                
+                // Simulate API call
+                setTimeout(() => {
+                    alert('✅ Login successful!');
+                    window.location.href = 'dashboard.html';
+                }, 1500);
+            } else {
+                alert('❌ Please fill in all fields.');
+            }
+        });
+
+        // Forgot password functionality
+        document.querySelector('.forgot-password').addEventListener('click', function(e) {
+            e.preventDefault();
+            const userEmail = prompt('Enter your email to reset password:');
+            if (userEmail) {
+                alert(`Password reset link sent to: ${userEmail}`);
+            }
+        });
+    </script>
+</body>
+</html>

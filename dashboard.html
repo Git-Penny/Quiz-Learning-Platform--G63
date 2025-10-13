@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Dashboard - Quizr</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body class="dashboard-body">
+    <!-- Header -->
+    <header class="dashboard-header">
+        <nav>
+            <div class="logo">
+                <img src="images/QUIZR (2).png" height="35" width="43" alt="Quizr Logo">
+                <span>Quizr</span>
+            </div>
+
+            <div class="nav-center">
+                <a href="index.html"><i class="fas fa-home"></i> Home</a>
+                <a href="dashboard.html" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                <a href="leaderboard.html"><i class="fas fa-trophy"></i> Leaderboard</a>
+            </div>
+
+            <div class="nav-right">
+                <div class="dashboard-user-menu">
+                    <span class="dashboard-user-name">Welcome, Student!</span>
+                    <div class="dashboard-user-dropdown">
+                        <a href="profile.html"><i class="fas fa-user"></i> Profile</a>
+                        <a href="settings.html"><i class="fas fa-cog"></i> Settings</a>
+                        <a href="index.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- External Hamburger Menu -->
+    <button class="dashboard-hamburger-menu" id="hamburgerMenu">
+        <i class="fas fa-bars" id="hamburgerIcon"></i>
+    </button>
+
+    <!-- Overlay for mobile -->
+    <div class="dashboard-overlay" id="overlay"></div>
+
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="dashboard-sidebar" id="sidebar">
+            <div class="dashboard-sidebar-header">
+                <div class="logo">
+                    <span>Quizr</span>
+                </div>
+                <button class="dashboard-close-sidebar" id="closeSidebar">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <nav class="dashboard-sidebar-nav">
+                <!-- Main Navigation Items -->
+                <div class="dashboard-sidebar-main-nav">
+                    <a href="dashboard.html" class="dashboard-sidebar-item active" data-tooltip="Dashboard">
+                        <i class="fas fa-home"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    
+                    <a href="progress.html" class="dashboard-sidebar-item" data-tooltip="Progress">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Progress</span>
+                    </a>
+                    
+                    <a href="leaderboard.html" class="dashboard-sidebar-item" data-tooltip="Leaderboard">
+                        <i class="fas fa-trophy"></i>
+                        <span>Leaderboard</span>
+                    </a>
+                </div>
+                
+                <!-- Bottom Navigation Items (Settings & Profile) -->
+                <div class="dashboard-sidebar-bottom-nav">
+                    <a href="settings.html" class="dashboard-sidebar-item" data-tooltip="Settings">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                    
+                    <a href="profile.html" class="dashboard-sidebar-item" data-tooltip="Profile">
+                        <i class="fas fa-user"></i>
+                        <span>Profile</span>
+                    </a>
+                </div>
+            </nav>
+        </aside>
+       
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <!-- Welcome Section -->
+            <section class="dashboard-welcome-section">
+                <div class="dashboard-welcome-content">
+                    <h1>Welcome back! 👋</h1>
+                    <p>Continue your journey through Namibian history.</p>
+                    <div class="dashboard-quick-stats">
+                        <div class="dashboard-stat-card">
+                            <i class="fas fa-check-circle"></i>
+                            <div>
+                                <h3>0</h3>
+                                <span>Quizzes Completed</span>
+                            </div>
+                        </div>
+                        <div class="dashboard-stat-card">
+                            <i class="fas fa-star"></i>
+                            <div>
+                                <h3>0%</h3>
+                                <span>Average Score</span>
+                            </div>
+                        </div>
+                        <div class="dashboard-stat-card">
+                            <i class="fas fa-clock"></i>
+                            <div>
+                                <h3>0</h3>
+                                <span>In Progress</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quiz Categories Section -->
+            <section class="dashboard-categories-section">
+                <h2>Start Learning</h2>
+                <div class="dashboard-categories-grid">
+                    <div class="dashboard-category-card">
+                        <i class="fas fa-flag"></i>
+                        <h3>Independence Era</h3>
+                        <p>1990 - Present Day</p>
+                        <div class="dashboard-category-stats">
+                            <span>12 Questions</span>
+                            <span>•</span>
+                            <span>15 min</span>
+                        </div>
+                        <a href="quiz.html" class="dashboard-btn-quiz">Start Quiz</a>
+                    </div>
+                    
+                    <div class="dashboard-category-card">
+                        <i class="fas fa-landmark"></i>
+                        <h3>Colonial History</h3>
+                        <p>1884-1990</p>
+                        <div class="dashboard-category-stats">
+                            <span>15 Questions</span>
+                            <span>•</span>
+                            <span>20 min</span>
+                        </div>
+                        <a href="quiz.html" class="dashboard-btn-quiz">Start Quiz</a>
+                    </div>
+                    
+                    <div class="dashboard-category-card">
+                        <i class="fas fa-history"></i>
+                        <h3>Pre-Colonial Era</h3>
+                        <p>Before 1884</p>
+                        <div class="dashboard-category-stats">
+                            <span>10 Questions</span>
+                            <span>•</span>
+                            <span>12 min</span>
+                        </div>
+                        <a href="quiz.html" class="dashboard-btn-quiz">Start Quiz</a>
+                    </div>
+                    
+                    <div class="dashboard-category-card">
+                        <i class="fas fa-monument"></i>
+                        <h3>Genocide & Resistance</h3>
+                        <p>1904-1908 & Beyond</p>
+                        <div class="dashboard-category-stats">
+                            <span>8 Questions</span>
+                            <span>•</span>
+                            <span>10 min</span>
+                        </div>
+                        <a href="quiz.html" class="dashboard-btn-quiz">Start Quiz</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Recent Activity -->
+            <section class="dashboard-activity-section">
+                <h2>Recent Activity</h2>
+                <div class="dashboard-activity-list">
+                    <div class="dashboard-activity-item">
+                        <i class="fas fa-info-circle dashboard-primary"></i>
+                        <div class="dashboard-activity-content">
+                            <p>Welcome to Quizr! Start your first quiz.</p>
+                            <span class="dashboard-activity-time">Just now</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // Hamburger menu functionality
+        const hamburgerMenu = document.getElementById('hamburgerMenu');
+        const hamburgerIcon = document.getElementById('hamburgerIcon');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+
+        // Toggle sidebar
+        function toggleSidebar() {
+            const isMobile = window.innerWidth <= 1024;
+            
+            if (isMobile) {
+                // Mobile behavior
+                sidebar.classList.toggle('open');
+                overlay.classList.toggle('active');
+                document.body.style.overflow = sidebar.classList.contains('open') ? 'hidden' : '';
+            } else {
+                // Desktop behavior - toggle collapsed state
+                sidebar.classList.toggle('collapsed');
+            }
+            
+            // Toggle hamburger icon
+            if (sidebar.classList.contains('collapsed') || !sidebar.classList.contains('open')) {
+                hamburgerIcon.className = 'fas fa-bars';
+            } else {
+                hamburgerIcon.className = 'fas fa-times';
+            }
+        }
+
+        // Open sidebar
+        hamburgerMenu.addEventListener('click', toggleSidebar);
+
+        // Close sidebar when clicking overlay on mobile
+        overlay.addEventListener('click', function() {
+            if (window.innerWidth <= 1024) {
+                toggleSidebar();
+            }
+        });
+
+        // Handle window resize
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 1024) {
+                // Reset for desktop
+                sidebar.classList.remove('open');
+                overlay.classList.remove('active');
+                document.body.style.overflow = '';
+                hamburgerIcon.className = 'fas fa-bars';
+            } else {
+                // Reset for mobile
+                sidebar.classList.add('collapsed');
+                hamburgerIcon.className = 'fas fa-bars';
+            }
+        });
+
+        // User dropdown functionality
+        const userMenu = document.querySelector('.dashboard-user-menu');
+        const userDropdown = document.querySelector('.dashboard-user-dropdown');
+
+        userMenu.addEventListener('click', function(e) {
+            e.stopPropagation();
+            userDropdown.style.display = userDropdown.style.display === 'block' ? 'none' : 'block';
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function() {
+            userDropdown.style.display = 'none';
+        });
+
+        // Sidebar active state
+        const sidebarItems = document.querySelectorAll('.dashboard-sidebar-item');
+        sidebarItems.forEach(item => {
+            item.addEventListener('click', function() {
+                sidebarItems.forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Close sidebar on mobile after selection
+                if (window.innerWidth <= 1024) {
+                    toggleSidebar();
+                }
+            });
+        });
+
+        // Initialize sidebar state
+        window.addEventListener('load', function() {
+            if (window.innerWidth <= 1024) {
+                sidebar.classList.add('collapsed');
+            }
+            hamburgerIcon.className = 'fas fa-bars';
+        });
+    </script>
+</body>
+</html>
