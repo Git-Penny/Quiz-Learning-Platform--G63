@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Take Quiz - Quizr</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/quiz.css">
+</head>
+<body class="dashboard-body">
+    <!-- Header -->
+    <header class="dashboard-header">
+        <nav>
+            <div class="logo">
+                <img src="images/QUIZR (2).png" height="35" width="43" alt="Quizr Logo">
+                <span>Quizr</span>
+            </div>
+
+            <div class="nav-center">
+                <a href="index.html"><i class="fas fa-home"></i> Home</a>
+                <a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                <a href="leaderboard.html"><i class="fas fa-trophy"></i> Leaderboard</a>
+            </div>
+
+            <div class="nav-right">
+                <div class="dashboard-user-menu">
+                    <span class="dashboard-user-name">Welcome, Student!</span>
+                    <div class="dashboard-user-dropdown">
+                        <a href="profile.html"><i class="fas fa-user"></i> Profile</a>
+                        <a href="settings.html"><i class="fas fa-cog"></i> Settings</a>
+                        <a href="index.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Mobile Hamburger Menu -->
+    <button class="dashboard-mobile-hamburger" id="mobileHamburger">
+        <i class="fas fa-bars" id="mobileHamburgerIcon"></i>
+    </button>
+
+    <!-- Overlay for mobile -->
+    <div class="dashboard-overlay" id="overlay"></div>
+
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="dashboard-sidebar" id="sidebar">
+            <div class="dashboard-sidebar-header">
+                <button class="dashboard-hamburger-menu" id="desktopHamburger">
+                    <i class="fas fa-bars" id="desktopHamburgerIcon"></i>
+                </button>
+                <div class="logo">
+                    <span>Quizr</span>
+                </div>
+            </div>
+            
+            <nav class="dashboard-sidebar-nav">
+                <!-- Main Navigation Items -->
+                <div class="dashboard-sidebar-main-nav">
+                    <a href="dashboard.html" class="dashboard-sidebar-item">
+                        <i class="fas fa-home"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    
+                    <a href="progress.html" class="dashboard-sidebar-item">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Progress</span>
+                    </a>
+                    
+                    <a href="leaderboard.html" class="dashboard-sidebar-item">
+                        <i class="fas fa-trophy"></i>
+                        <span>Leaderboard</span>
+                    </a>
+                </div>
+                
+                <!-- Bottom Navigation Items -->
+                <div class="dashboard-sidebar-bottom-nav">
+                    <a href="settings.html" class="dashboard-sidebar-item">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                    
+                    <a href="profile.html" class="dashboard-sidebar-item">
+                        <i class="fas fa-user"></i>
+                        <span>Profile</span>
+                    </a>
+                </div>
+            </nav>
+        </aside>
+       
+        <!-- Main Content - Quiz Area -->
+        <main class="dashboard-main">
+            <!-- Quiz Container -->
+            <div class="quiz-container">
+                <!-- Quiz Header -->
+                <div class="quiz-header-section">
+                    <div class="quiz-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 0%;"></div>
+                        </div>
+                        <div class="quiz-stats">
+                            <span class="question-counter">Question <span id="currentQuestionNumber">1</span> of <span id="totalQuestions">10</span></span>
+                            <span class="time-remaining">15:00</span>
+                        </div>
+                    </div>
+                    
+                    <div class="quiz-category">
+                        <h1 id="quizTitle">Quiz Category</h1>
+                        <p id="quizDescription">Test your knowledge</p>
+                    </div>
+                </div>
+
+                <!-- Quiz Content -->
+                <div class="quiz-content">
+                    <!-- Question Section -->
+                    <div class="question-section">
+                        <div class="question-card">
+                            <h2 id="questionText">Question will appear here...</h2>
+                            
+                            <!-- Options Container -->
+                            <div class="options-container" id="optionsContainer">
+                                <div class="option" data-value="A">
+                                    <span class="option-letter">A</span>
+                                    <span class="option-text">Option A</span>
+                                </div>
+                                <div class="option" data-value="B">
+                                    <span class="option-letter">B</span>
+                                    <span class="option-text">Option B</span>
+                                </div>
+                                <div class="option" data-value="C">
+                                    <span class="option-letter">C</span>
+                                    <span class="option-text">Option C</span>
+                                </div>
+                                <div class="option" data-value="D">
+                                    <span class="option-letter">D</span>
+                                    <span class="option-text">Option D</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Navigation & Actions -->
+                    <div class="quiz-actions">
+                        <button class="previous-btn" id="prevBtn" disabled>
+                            <i class="fas fa-arrow-left"></i> Previous
+                        </button>
+                        
+                        <div class="quiz-controls">
+                            <button class="flag-btn" id="flagBtn">
+                                <i class="far fa-flag"></i> Flag Question
+                            </button>
+                            <button class="next-btn" id="nextBtn">
+                                Next <i class="fas fa-arrow-right"></i>
+                            </button>
+                            <button class="submit-btn" id="submitBtn" style="display: none;">
+                                <i class="fas fa-paper-plane"></i> Submit Quiz
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quiz Sidebar -->
+                <div class="quiz-sidebar">
+                    <div class="question-palette">
+                        <h3>Questions</h3>
+                        <div class="question-grid" id="questionGrid">
+                            <!-- Question numbers will be populated by PHP -->
+                            <div class="question-number">1</div>
+                            <div class="question-number">2</div>
+                            <div class="question-number">3</div>
+                            <div class="question-number">4</div>
+                            <div class="question-number">5</div>
+                            <div class="question-number">6</div>
+                            <div class="question-number">7</div>
+                            <div class="question-number">8</div>
+                            <div class="question-number">9</div>
+                            <div class="question-number">10</div>
+                        </div>
+                    </div>
+                    
+                    <div class="quiz-summary">
+                        <h3>Summary</h3>
+                        <div class="summary-stats">
+                            <div class="stat-item">
+                                <span class="stat-number answered" id="answeredCount">0</span>
+                                <span class="stat-label">Answered</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number not-answered" id="notAnsweredCount">10</span>
+                                <span class="stat-label">Not Answered</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number flagged" id="flaggedCount">0</span>
+                                <span class="stat-label">Flagged</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Simple script for sidebar functionality only -->
+    <script>
+        // Basic sidebar toggle functionality
+        const mobileHamburger = document.getElementById('mobileHamburger');
+        const desktopHamburger = document.getElementById('desktopHamburger');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+
+        function toggleSidebar() {
+            const isMobile = window.innerWidth <= 1024;
+            
+            if (isMobile) {
+                sidebar.classList.toggle('open');
+                overlay.classList.toggle('active');
+                document.body.style.overflow = sidebar.classList.contains('open') ? 'hidden' : '';
+            } else {
+                sidebar.classList.toggle('collapsed');
+            }
+        }
+
+        mobileHamburger.addEventListener('click', toggleSidebar);
+        desktopHamburger.addEventListener('click', toggleSidebar);
+
+        overlay.addEventListener('click', function() {
+            if (window.innerWidth <= 1024) {
+                toggleSidebar();
+            }
+        });
+
+        // Basic option selection (placeholder for PHP functionality)
+        document.querySelectorAll('.option').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+            });
+        });
+    </script>
+</body>
+</html>
