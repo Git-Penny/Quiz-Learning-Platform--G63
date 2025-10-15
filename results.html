@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <title>Quiz Results -Quizr</title>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/results.css">
+</head>
+<body class="dashboard-body">
+    <!-- Header -->
+    <header class="dashboard-header">
+        <nav>
+            <div class="logo">
+                <img src="images/QUIZR (2).png" height="35" width="43" alt="Quizr Logo">
+                <span>Quizr</span>
+            </div>
+
+            <div class="nav-center">
+                <a href="index.html"><i class="fas fa-home"></i> Home</a>
+                <a href="dashboard.html" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                <a href="leaderboard.html"><i class="fas fa-trophy"></i> Leaderboard</a>
+            </div>
+
+            <div class="nav-right">
+                <div class="dashboard-user-menu">
+                    <span class="dashboard-user-name">Welcome, Student!</span>
+                    <div class="dashboard-user-dropdown">
+                        <a href="profile.html"><i class="fas fa-user"></i> Profile</a>
+                        <a href="settings.html"><i class="fas fa-cog"></i> Settings</a>
+                        <a href="index.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="dashboard-container">
+        <main class="dashboard-main">
+            <!-- Results Section -->
+            <section class="results-section">
+                <div class="results-header">
+                    <h1>Quiz Results</h1>
+                    <div class="score-summary">
+                        <div class="score-circle">
+                            <p>You scored <span class="score-percentage" id="scorePercentage">0%</span> out of <span id="totalQuestions">0</span> questions correctly</p>
+                            <div class="performance-badge" id="performanceBadge"><i class="fas fa-medal"></i>
+                            <span>Performance Level</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Review Section-->
+                    
+
+
+        </main>
+
+    </div>
+    
+</body>
+</html>
