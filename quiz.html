@@ -206,42 +206,6 @@
         </main>
     </div>
 
-    <!-- Simple script for sidebar functionality only -->
-    <script>
-        // Basic sidebar toggle functionality
-        const mobileHamburger = document.getElementById('mobileHamburger');
-        const desktopHamburger = document.getElementById('desktopHamburger');
-        const sidebar = document.getElementById('sidebar');
-        const overlay = document.getElementById('overlay');
-
-        function toggleSidebar() {
-            const isMobile = window.innerWidth <= 1024;
-            
-            if (isMobile) {
-                sidebar.classList.toggle('open');
-                overlay.classList.toggle('active');
-                document.body.style.overflow = sidebar.classList.contains('open') ? 'hidden' : '';
-            } else {
-                sidebar.classList.toggle('collapsed');
-            }
-        }
-
-        mobileHamburger.addEventListener('click', toggleSidebar);
-        desktopHamburger.addEventListener('click', toggleSidebar);
-
-        overlay.addEventListener('click', function() {
-            if (window.innerWidth <= 1024) {
-                toggleSidebar();
-            }
-        });
-
-        // Basic option selection (placeholder for PHP functionality)
-        document.querySelectorAll('.option').forEach(option => {
-            option.addEventListener('click', function() {
-                document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
-                this.classList.add('selected');
-            });
-        });
-    </script>
+    <script src="js/quiz.js"></script>
 </body>
 </html>
