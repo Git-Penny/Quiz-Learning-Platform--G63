@@ -68,6 +68,11 @@ nav {
 }
 
 /* ===== CENTER NAVIGATION LINKS ===== */
+header, nav {
+    position: relative;
+    z-index: 2000; 
+}
+
 .nav-center {
     display: flex;
     gap: 2rem;
@@ -108,7 +113,7 @@ nav {
     top: 100%;
     left: 0;
     background: white;
-    min-width: 220px;
+    min-width: 240px;
     border-radius: 12px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.15);
     opacity: 0;
@@ -138,6 +143,7 @@ nav {
 }
 
 .dropdown-menu a:hover {
+    border-radius: 12px;
     background-color: #f8f9fa;
     color: #0033cc;
     transform: translateX(5px);
