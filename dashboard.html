@@ -108,22 +108,22 @@
                         <div class="dashboard-stat-card">
                             <i class="fas fa-check-circle"></i>
                             <div>
-                                <h3>0</h3>
+                                <h3 class="stat-completed">0</h3>
                                 <span>Quizzes Completed</span>
                             </div>
                         </div>
                         <div class="dashboard-stat-card">
                             <i class="fas fa-star"></i>
                             <div>
-                                <h3>0%</h3>
+                                <h3 class="stat-average">0%</h3>
                                 <span>Average Score</span>
                             </div>
                         </div>
                         <div class="dashboard-stat-card">
-                            <i class="fas fa-clock"></i>
+                            <i class="fas fa-fire"></i>
                             <div>
-                                <h3>0</h3>
-                                <span>In Progress</span>
+                                <h3 class="stat-streak">0</h3>
+                                <span>Day Streak</span>
                             </div>
                         </div>
                     </div>
@@ -208,15 +208,59 @@
                 </div>
             </section>
 
-            <!-- Recent Activity -->
+            <!-- Activity & Progress Section -->
             <section class="dashboard-activity-section">
-                <h2>Recent Activity</h2>
-                <div class="dashboard-activity-list">
-                    <div class="dashboard-activity-item">
-                        <i class="fas fa-info-circle dashboard-primary"></i>
-                        <div class="dashboard-activity-content">
-                            <p>Welcome to Quizr! Start your first quiz.</p>
-                            <span class="dashboard-activity-time">Just now</span>
+                <div class="activity-header">
+                    <h2>Progress & Activity</h2>
+                    <div class="progress-toggle">
+                        <button class="toggle-btn active" data-view="activity">Recent Activity</button>
+                        <button class="toggle-btn" data-view="progress">Your Progress</button>
+                    </div>
+                </div>
+
+                <!-- Recent Activity View -->
+                <div class="activity-view active" id="activityView">
+                    <div class="dashboard-activity-list">
+                        <div class="dashboard-activity-item">
+                            <i class="fas fa-info-circle dashboard-primary"></i>
+                            <div class="dashboard-activity-content">
+                                <p>Welcome to Quizr! Start your first quiz to track your progress.</p>
+                                <span class="dashboard-activity-time">Just now</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Progress View -->
+                <div class="progress-view" id="progressView">
+                    <!-- Overall Progress -->
+                    <div class="overall-progress">
+                        <h4>Overall Learning Progress</h4>
+                        <div class="progress-summary">
+                            <div class="progress-metric">
+                                <span class="metric-value">0%</span>
+                                <span class="metric-label">Mastery Level</span>
+                            </div>
+                            <div class="progress-metric">
+                                <span class="metric-value">0</span>
+                                <span class="metric-label">Quizzes Taken</span>
+                            </div>
+                            <div class="progress-metric">
+                                <span class="metric-value">0</span>
+                                <span class="metric-label">Day Streak</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category Progress -->
+                    <div class="category-progress">
+                        <h4>Your Category Progress</h4>
+                        <div class="progress-list" id="progressList">
+                            <div class="empty-progress">
+                                <i class="fas fa-chart-line"></i>
+                                <p>No quizzes completed yet</p>
+                                <small>Start learning to see your progress here</small>
+                            </div>
                         </div>
                     </div>
                 </div>
