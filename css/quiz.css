@@ -285,8 +285,8 @@
 }
 
 .question-number.answered {
-    border-color: #4cd964;
-    background: #4cd964;
+    border-color: #4d4d4d;
+    background: #5a5a5a;
     color: white;
 }
 
@@ -324,13 +324,14 @@
 }
 
 .stat-number.answered {
-    background: #4cd964;
+    background: #4d4d4d;
     color: white;
 }
 
 .stat-number.not-answered {
-    background: #6c757d;
-    color: white;
+    background: #ffffff;
+    color:#333;
+    border: 0.9px solid #ccc;
 }
 
 .stat-number.flagged {
