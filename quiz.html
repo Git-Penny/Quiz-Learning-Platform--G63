@@ -68,7 +68,7 @@
                         <span>Dashboard</span>
                     </a>
                     
-                    <a href="progress.html" class="dashboard-sidebar-item">
+                    <a href="#progress" class="dashboard-sidebar-item" data-tooltip="Progress" id="progressSidebarLink">
                         <i class="fas fa-chart-line"></i>
                         <span>Progress</span>
                     </a>
@@ -81,14 +81,14 @@
                 
                 <!-- Bottom Navigation Items -->
                 <div class="dashboard-sidebar-bottom-nav">
-                    <a href="settings.html" class="dashboard-sidebar-item">
-                        <i class="fas fa-cog"></i>
-                        <span>Settings</span>
-                    </a>
-                    
                     <a href="profile.html" class="dashboard-sidebar-item">
                         <i class="fas fa-user"></i>
                         <span>Profile</span>
+                    </a>
+
+                    <a href="index.html" class="dashboard-sidebar-item" data-tooltip="Logout" id="logoutSidebarLink">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
                     </a>
                 </div>
             </nav>
@@ -207,5 +207,40 @@
     </div>
 
     <script src="js/quiz.js"></script>
+
+    <script>
+        // Basic sidebar functionality for results page
+        const mobileHamburger = document.getElementById('mobileHamburger');
+        const desktopHamburger = document.getElementById('desktopHamburger');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+
+        function toggleSidebar() {
+            const isMobile = window.innerWidth <= 1024;
+            
+            if (isMobile) {
+                sidebar.classList.toggle('open');
+                overlay.classList.toggle('active');
+                document.body.style.overflow = sidebar.classList.contains('open') ? 'hidden' : '';
+            } else {
+                sidebar.classList.toggle('collapsed');
+            }
+        }
+
+        if (mobileHamburger) {
+            mobileHamburger.addEventListener('click', toggleSidebar);
+        }
+        if (desktopHamburger) {
+            desktopHamburger.addEventListener('click', toggleSidebar);
+        }
+        if (overlay) {
+            overlay.addEventListener('click', function() {
+                if (window.innerWidth <= 1024) {
+                    toggleSidebar();
+                }
+            });
+        }
+    </script>
+
 </body>
 </html>
