@@ -1,36 +1,22 @@
-// Quiz Data (replace with fetch from backend)
+// ===========================
+// Fetch Quiz Data from Backend
+// ===========================
+const quizCategory = new URLSearchParams(window.location.search).get('category') || 'independence';
+const apiUrl = `api/get_quiz.php?category=${quizCategory}`;
+console.log("Fetching from:", apiUrl);
 
-const quizCategory = new URLSearchParams(window.location.search).get('category') || 'default';
-const quizData = {
+let quizData = {
   title: quizCategory.replace(/\b\w/g, l => l.toUpperCase()),
   description: "Answer the questions carefully.",
-  questions: [
-    {
-      text: "Namibia gained independence in which year?",
-      options: ["1980", "1990", "2000", "1970"],
-      answer: "B",
-      explanation: "Namibia gained independence from South Africa on 21 March 1990."
-    },
-    {
-      text: "Who was the first President of independent Namibia?",
-      options: ["Hifikepunye Pohamba", "Sam Nujoma", "Peter Katjavivi", "Theo-Ben Gurirab"],
-      answer: "B",
-      explanation: "Sam Nujoma served as Namibia's first President from 1990 to 2005."
-    },
-    // Add more questions or fetch via AJAX
-  ]
+  questions: [],
 };
 
-
 // State Variables
-
 let currentQuestionIndex = 0;
 const userAnswers = [];
 const flaggedQuestions = new Set();
 
-
 // DOM Elements
-
 const questionText = document.getElementById('questionText');
 const optionsContainer = document.getElementById('optionsContainer');
 const currentQuestionNumber = document.getElementById('currentQuestionNumber');
@@ -48,45 +34,100 @@ const quizTitle = document.getElementById('quizTitle');
 const quizDescription = document.getElementById('quizDescription');
 
 
+// ===========================
 // Initialize Quiz
+// ===========================
+async function initQuiz() {
+  try {
+    console.log("Starting fetch...");
+    const res = await fetch(apiUrl);
+    
+    // Check if response is OK
+    if (!res.ok) {
+      throw new Error(`HTTP error! status: ${res.status}`);
+    }
+    
+    const data = await res.json();
+    console.log("Fetched data:", data);
 
-function initQuiz() {
-  quizTitle.textContent = quizData.title;
-  quizDescription.textContent = quizData.description;
-  totalQuestions.textContent = quizData.questions.length;
+    // Check for errors in response
+    if (data.error) {
+      questionText.textContent = `⚠️ Error: ${data.error}`;
+      console.error("API Error:", data);
+      return;
+    }
 
-  // Populate question palette
-  questionGrid.innerHTML = '';
-  quizData.questions.forEach((q, i) => {
-    const qDiv = document.createElement('div');
-    qDiv.className = 'question-number';
-    qDiv.textContent = i + 1;
-    qDiv.addEventListener('click', () => {
-      currentQuestionIndex = i;
-      renderQuestion();
+    if (!Array.isArray(data) || data.length === 0) {
+      questionText.textContent = "No questions found for this category.";
+      return;
+    }
+
+    // Map backend format to frontend format
+    quizData.questions = data.map(q => ({
+      id: q.id,
+      text: q.question_text,
+      explanation: q.explanation || '',
+      options: q.choices.map(c => c.text),
+      correctChoice: q.choices.find(c => c.is_correct === true || c.is_correct === 1)?.text || ''
+    }));
+
+    console.log("Mapped questions:", quizData.questions);
+
+    // Initialize user answers array
+    quizData.questions.forEach(() => userAnswers.push(null));
+
+    quizTitle.textContent = quizData.title;
+    quizDescription.textContent = quizData.description;
+    totalQuestions.textContent = quizData.questions.length;
+
+    // Populate question palette
+    questionGrid.innerHTML = '';
+    quizData.questions.forEach((q, i) => {
+      const qDiv = document.createElement('div');
+      qDiv.className = 'question-number';
+      qDiv.textContent = i + 1;
+      qDiv.addEventListener('click', () => {
+        currentQuestionIndex = i;
+        renderQuestion();
+      });
+      questionGrid.appendChild(qDiv);
     });
-    questionGrid.appendChild(qDiv);
-  });
 
-  renderQuestion();
+    renderQuestion();
+  } catch (err) {
+    console.error("Error loading quiz:", err);
+    questionText.textContent = `⚠️ Error loading quiz data: ${err.message}`;
+  }
 }
 
 
+// ===========================
 // Render Question
-
+// ===========================
 function renderQuestion() {
   const q = quizData.questions[currentQuestionIndex];
+  if (!q) {
+    console.error("No question at index:", currentQuestionIndex);
+    return;
+  }
+
   questionText.textContent = q.text;
-  const options = optionsContainer.querySelectorAll('.option');
+  optionsContainer.innerHTML = '';
 
-  options.forEach((opt, i) => {
-    opt.querySelector('.option-text').textContent = q.options[i];
-    opt.classList.remove('correct', 'incorrect', 'selected');
+  q.options.forEach((optText, i) => {
+    const option = document.createElement('div');
+    option.className = 'option';
+    option.dataset.value = optText;
+    option.innerHTML = `<span class="option-label">${String.fromCharCode(65 + i)}.</span> <span class="option-text">${optText}</span>`;
 
-    // Restore previous selection
-    if (userAnswers[currentQuestionIndex] === opt.dataset.value) {
-      opt.classList.add('selected');
+    option.addEventListener('click', () => handleOptionSelect(option, optText));
+
+    // Highlight previously selected answer
+    if (userAnswers[currentQuestionIndex] === optText) {
+      option.classList.add('selected');
     }
+
+    optionsContainer.appendChild(option);
   });
 
   // Update buttons
@@ -94,41 +135,44 @@ function renderQuestion() {
   nextBtn.style.display = currentQuestionIndex === quizData.questions.length - 1 ? 'none' : 'inline-block';
   submitBtn.style.display = currentQuestionIndex === quizData.questions.length - 1 ? 'inline-block' : 'none';
 
-  // Update question number and progress
+  // Update flag button
+  if (flaggedQuestions.has(currentQuestionIndex)) {
+    flagBtn.innerHTML = '<i class="fas fa-flag"></i> Unflag Question';
+  } else {
+    flagBtn.innerHTML = '<i class="far fa-flag"></i> Flag Question';
+  }
+
   currentQuestionNumber.textContent = currentQuestionIndex + 1;
   const progressPercent = ((currentQuestionIndex + 1) / quizData.questions.length) * 100;
   progressFill.style.width = `${progressPercent}%`;
 
-  updatePalette();
   updateStats();
 }
 
 
-// Option Click Handler
+// ===========================
+// Handle Option Selection
+// ===========================
+function handleOptionSelect(option, selectedText) {
+  // Store the user's answer
+  userAnswers[currentQuestionIndex] = selectedText;
 
-optionsContainer.querySelectorAll('.option').forEach(option => {
-  option.addEventListener('click', function () {
-    const selectedValue = this.dataset.value;
-
-    // Save answer
-    userAnswers[currentQuestionIndex] = selectedValue;
-
-    // Immediate feedback
-    const correctAnswer = quizData.questions[currentQuestionIndex].answer;
-    optionsContainer.querySelectorAll('.option').forEach(opt => {
-      opt.classList.remove('correct', 'incorrect');
-      if (opt.dataset.value === correctAnswer) opt.classList.add('correct');
-    });
-
-    if (selectedValue !== correctAnswer) this.classList.add('incorrect');
-
-    renderQuestion();
+  // Remove previous selection highlighting
+  const options = document.querySelectorAll('.option');
+  options.forEach(opt => {
+    opt.classList.remove('selected');
   });
-});
+
+  // Highlight the selected option
+  option.classList.add('selected');
+  
+  updateStats();
+}
 
 
-// Navigation Buttons
-
+// ===========================
+// Navigation & Controls
+// ===========================
 prevBtn.addEventListener('click', () => {
   if (currentQuestionIndex > 0) {
     currentQuestionIndex--;
@@ -143,21 +187,44 @@ nextBtn.addEventListener('click', () => {
   }
 });
 
-
-// Flag Question
-
 flagBtn.addEventListener('click', () => {
   if (flaggedQuestions.has(currentQuestionIndex)) {
     flaggedQuestions.delete(currentQuestionIndex);
   } else {
     flaggedQuestions.add(currentQuestionIndex);
   }
-  updateStats();
+  renderQuestion(); // Re-render to update flag button text
+});
+
+submitBtn.addEventListener('click', () => {
+  // Check if all questions are answered
+  const unansweredCount = userAnswers.filter(a => !a).length;
+  
+  if (unansweredCount > 0) {
+    const confirmSubmit = confirm(`You have ${unansweredCount} unanswered question(s). Do you want to submit anyway?`);
+    if (!confirmSubmit) return;
+  }
+
+  // Calculate score
+  let score = 0;
+  quizData.questions.forEach((q, i) => {
+    if (userAnswers[i] === q.correctChoice) {
+      score++;
+    }
+  });
+
+  const percentage = ((score / quizData.questions.length) * 100).toFixed(1);
+  
+  alert(`🏆 Quiz Completed!\n\nYour score: ${score} / ${quizData.questions.length}\nPercentage: ${percentage}%`);
+  
+  // Optionally redirect to results page or dashboard
+  // window.location.href = `results.html?score=${score}&total=${quizData.questions.length}`;
 });
 
 
-// Update Sidebar Stats
-
+// ===========================
+// Stats & Highlight
+// ===========================
 function updateStats() {
   const answeredCount = userAnswers.filter(a => a).length;
   const notAnsweredCount = quizData.questions.length - answeredCount;
@@ -167,9 +234,9 @@ function updateStats() {
   notAnsweredCountEl.textContent = notAnsweredCount;
   flaggedCountEl.textContent = flaggedCount;
 
-  // Update palette colors
   questionGrid.querySelectorAll('.question-number').forEach((qDiv, i) => {
-    qDiv.classList.remove('answered', 'not-answered', 'flagged');
+    qDiv.classList.remove('answered', 'not-answered', 'flagged', 'active');
+    
     if (flaggedQuestions.has(i)) {
       qDiv.classList.add('flagged');
     } else if (userAnswers[i]) {
@@ -177,28 +244,15 @@ function updateStats() {
     } else {
       qDiv.classList.add('not-answered');
     }
+    
+    if (i === currentQuestionIndex) {
+      qDiv.classList.add('active');
+    }
   });
 }
 
-function updatePalette() {
-  // Highlight current question
-  questionGrid.querySelectorAll('.question-number').forEach((qDiv, i) => {
-    qDiv.classList.toggle('active', i === currentQuestionIndex);
-  });
-}
 
-// Submit Quiz
-
-submitBtn.addEventListener('click', () => {
-  let score = 0;
-  quizData.questions.forEach((q, i) => {
-    if (userAnswers[i] === q.answer) score++;
-  });
-
-  alert(`🏆 Quiz Completed!\nYour score: ${score} / ${quizData.questions.length}`);
-  // You can send results to backend here via fetch
-});
-
-// Initialize
-
+// ===========================
+// Start Quiz
+// ===========================
 initQuiz();
