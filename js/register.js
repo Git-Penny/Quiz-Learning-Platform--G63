@@ -44,14 +44,22 @@ form.addEventListener('submit', function(e) {
 
     // Simulate API call
     setTimeout(() => {
+    function getFirstName(fullName) {
+        if (!fullName) return 'User';
+        
+        const names = fullName.trim().split(/\s+/);
+        return names[0] || 'User';
+    }
 
-        localStorage.setItem('currentUser', JSON.stringify({
-            id: Date.now(), // or generate a real ID
-            name: fullName,
-            email: email
-        }));
+    const firstName = getFirstName(fullName);
 
-        alert('✅ Account created successfully!');
-        window.location.href = 'dashboard.html';
-    }, 1500);
+    localStorage.setItem('currentUser', JSON.stringify({
+        id: Date.now(),
+        name: firstName,
+        email: email
+    }));
+
+    alert('✅ Account created successfully!');
+    window.location.href = 'dashboard.html';
+}, 1500);
 });
