@@ -83,7 +83,7 @@
     margin-left: auto;
 }
 
-/* External Hamburger Menu - MOVED TO SIDEBAR HEADER */
+/* External Hamburger Menu */
 .dashboard-hamburger-menu {
     background: none;
     border: none;
@@ -100,7 +100,7 @@
     border-radius: 6px;
 }
 
-/* Mobile Hamburger Menu - Fixed Position */
+/* Mobile Hamburger Menu */
 .dashboard-mobile-hamburger {
     position: fixed;
     left: 20px;
@@ -212,7 +212,7 @@
 
 .dashboard-sidebar-header {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
     padding: 1rem 1.5rem;
     border-bottom: 1px solid #e9ecef;
@@ -231,10 +231,7 @@
 }
 
 .dashboard-sidebar-header .logo {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    transition: all 0.3s ease;
+    display: none;
 }
 
 .dashboard-sidebar-header .logo img {
@@ -270,6 +267,10 @@
     flex: 1;
     padding: 0 1rem;
     transition: all 0.3s ease;
+}
+
+.dashboard-sidebar-bottom-nav .dashboard-sidebar-item {
+    padding: 1rem 8.2rem;
 }
 
 .dashboard-sidebar.collapsed .dashboard-sidebar-nav {
