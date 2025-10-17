@@ -60,38 +60,6 @@
         </div>
     </div>
 
-    <script>
-        document.querySelector('form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const email = document.querySelector('input[type="email"]').value;
-            const password = document.querySelector('input[type="password"]').value;
-            
-            if (email && password) {
-                // Show loading state
-                const button = this.querySelector('.submit-btn');
-                const originalText = button.innerHTML;
-                button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing In...';
-                button.disabled = true;
-                
-                // Simulate API call
-                setTimeout(() => {
-                    alert('✅ Login successful!');
-                    window.location.href = 'dashboard.html';
-                }, 1500);
-            } else {
-                alert('❌ Please fill in all fields.');
-            }
-        });
-
-        // Forgot password functionality
-        document.querySelector('.forgot-password').addEventListener('click', function(e) {
-            e.preventDefault();
-            const userEmail = prompt('Enter your email to reset password:');
-            if (userEmail) {
-                alert(`Password reset link sent to: ${userEmail}`);
-            }
-        });
-    </script>
+    <script type="module" src="js/login.js"></script>
 </body>
 </html>

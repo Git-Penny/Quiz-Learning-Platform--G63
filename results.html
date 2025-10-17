@@ -3,16 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
     
-    <title>Leaderboard - Quizr</title>
+    <title>Quiz Results -Quizr</title>
 
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/dashboard.css">
-    <link rel="stylesheet" href="css/leaderboard.css">
+    <link rel="stylesheet" href="css/results.css">
 </head>
 <body class="dashboard-body">
     <!-- Header -->
@@ -36,7 +37,6 @@
         </nav>
     </header>
 
-    <!-- Mobile Hamburger Menu -->
     <button class="dashboard-mobile-hamburger" id="mobileHamburger">
         <i class="fas fa-bars" id="mobileHamburgerIcon"></i>
     </button>
@@ -45,7 +45,7 @@
     <div class="dashboard-overlay" id="overlay"></div>
 
     <div class="dashboard-container">
-        <!-- Sidebar -->
+        <!--Sidebar-->
         <aside class="dashboard-sidebar" id="sidebar">
             <div class="dashboard-sidebar-header">
                 <button class="dashboard-hamburger-menu" id="desktopHamburger">
@@ -71,7 +71,7 @@
                         <span>Progress</span>
                     </a>
                     
-                    <a href="leaderboard.html" class="dashboard-sidebar-item active">
+                    <a href="leaderboard.html" class="dashboard-sidebar-item">
                         <i class="fas fa-trophy"></i>
                         <span>Leaderboard</span>
                     </a>
@@ -91,74 +91,49 @@
                 </div>
             </nav>
         </aside>
-       
-        <!-- Main Content -->
+
         <main class="dashboard-main">
-            <!-- Leaderboard Section -->
-            <section class="leaderboard-section">
-                <div class="leaderboard-header">
-                    <h1><i class="fas fa-trophy"></i> Leaderboard</h1>
-                    <p>Compete with other learners and climb to the top!</p>
-                    
-                    <!-- Time Filters -->
-                    <div class="leaderboard-filters">
-                        <button class="filter-btn active" data-filter="all-time">All Time</button>
-                        <button class="filter-btn" data-filter="monthly">This Month</button>
-                        <button class="filter-btn" data-filter="weekly">This Week</button>
+            <!-- Results Section -->
+            <section class="results-section">
+                <div class="results-header">
+                    <h1>Quiz Results</h1>
+                    <div class="score-summary">
+                        <div class="score-circle">
+                            <p>You scored <span class="score-percentage" id="scorePercentage">0%</span> out of <span id="totalQuestions">0</span> questions correctly</p>
+                            <div class="performance-badge" id="performanceBadge"><i class="fas fa-medal"></i>
+                            <span>Performance Level</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Top 3 Winners (Will be populated dynamically) -->
-                <div class="top-winners" id="topWinners">
-                    <div class="empty-state">
-                        <i class="fas fa-trophy"></i>
-                        <h3>No Leaderboard Data Yet</h3>
-                        <p>Be the first to complete a quiz and appear on the leaderboard!</p>
-                        <a href="dashboard.html" class="btn btn-primary">Take Your First Quiz</a>
+                <!--Review Section-->
+                <div class="review-section">
+                    <h2>Quiz Review</h2>
+                    <div class="review-list" id="reviewList">
+                        <!--Questions populated by PHP/JS-->
                     </div>
                 </div>
 
-                <!-- Leaderboard Table -->
-                <div class="leaderboard-table-container">
-                    <div class="empty-state">
-                        <i class="fas fa-users"></i>
-                        <h3>No Players Yet</h3>
-                        <p>Complete quizzes to see your ranking here</p>
-                    </div>
-                    <table class="leaderboard-table" style="display: none;">
-                        <thead>
-                            <tr>
-                                <th>Rank</th>
-                                <th>Player</th>
-                                <th>Points</th>
-                                <th>Quizzes</th>
-                                <th>Accuracy</th>
-                                <th>Badges</th>
-                            </tr>
-                        </thead>
-                        <tbody id="leaderboardBody">
-                            <!-- Leaderboard data will be populated by JavaScript from real data -->
-                        </tbody>
-                    </table>
+                <!--Action Buttons-->
+                <div class="results-actions">
+                    <a href="dashboard.html" class="btn btn-secondary"> Back to Dashboard
+                    </a>
+                    <a href="leaderboard.html" class="btn btn-primary">
+                        <i class="fas fa-trophy"></i>View Leaderboard
+                    </a>
+                    <button id=" retryQuiz" class="btn btn-success">
+                        <i class="fas fa-redo"></i> Retry Quiz
+                    </button>
                 </div>
-
-                <!-- User's Position (only shown if user has data) -->
-                <div class="user-position" id="userPosition" style="display: none;">
-                    <div class="user-rank">
-                        <span class="rank-number" id="userRank">#0</span>
-                        <span class="rank-label">Your Position</span>
-                    </div>
-                    <div class="user-stats" id="userStats">
-                        <!-- User stats will be populated dynamically -->
-                    </div>
-                </div>
-            </section>
+            </section>        
         </main>
     </div>
     
-    <script src="js/leaderboard.js"></script>
+    <script src="js/results.js"></script>
+
     <script>
-        // Basic sidebar functionality
+        // Basic sidebar functionality for results page
         const mobileHamburger = document.getElementById('mobileHamburger');
         const desktopHamburger = document.getElementById('desktopHamburger');
         const sidebar = document.getElementById('sidebar');
@@ -176,11 +151,20 @@
             }
         }
 
-        if (mobileHamburger) mobileHamburger.addEventListener('click', toggleSidebar);
-        if (desktopHamburger) desktopHamburger.addEventListener('click', toggleSidebar);
-        if (overlay) overlay.addEventListener('click', () => {
-            if (window.innerWidth <= 1024) toggleSidebar();
-        });
+        if (mobileHamburger) {
+            mobileHamburger.addEventListener('click', toggleSidebar);
+        }
+        if (desktopHamburger) {
+            desktopHamburger.addEventListener('click', toggleSidebar);
+        }
+        if (overlay) {
+            overlay.addEventListener('click', function() {
+                if (window.innerWidth <= 1024) {
+                    toggleSidebar();
+                }
+            });
+        }
     </script>
+
 </body>
 </html>

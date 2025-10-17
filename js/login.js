@@ -34,17 +34,31 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       const user = await login(email, password);
       if (user) {
-        showMessage(`✅ Welcome back, ${user.name || 'user'}!`, 'success');
-        setTimeout(() => (window.location.href = 'dashboard.html'), 1000);
-      } else {
-        showMessage('❌ Invalid email or password.', 'error');
-      }
-    } catch (err) {
-      console.error(err);
-      showMessage('❌ Something went wrong. Please try again.', 'error');
-    } finally {
-      setLoading(false);
+
+            function getFirstName(fullName) {
+        if (!fullName) return 'User';
+        
+        const names = fullName.trim().split(/\s+/);
+        return names[0] || 'User';
     }
+
+    const firstName = getFirstName(user.name || user.fullName || user.username);
+
+    localStorage.setItem('currentUser', JSON.stringify({
+      id: user.id,
+      name: firstName,
+      email: user.email
+    }));
+
+    showMessage(`✅ Welcome back, ${firstName}!`, 'success');
+    setTimeout(() => (window.location.href = 'dashboard.html'), 1000);
+  } else {
+    showMessage('❌ Invalid email or password.', 'error');
+  }
+} catch (err) {
+  console.error(err);
+  showMessage('❌ Something went wrong. Please try again.', 'error');
+}
   });
 
   // Forgot password

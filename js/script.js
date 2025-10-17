@@ -62,21 +62,62 @@ if (feedbackForm) {
   });
 }
 
-
-const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-const navRight = document.querySelector('.nav-right');
-
-if (currentUser && navRight) {
-  navRight.innerHTML = `
-    <span class="welcome-text">👋 Welcome, ${currentUser.name}</span>
-    <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
-  `;
-
-  // Logout functionality
-  document.getElementById('logoutBtn').addEventListener('click', e => {
-    e.preventDefault();
-    localStorage.removeItem('currentUser');
-    alert('👋 You have been logged out.');
-    location.reload();
-  });
+// Updated auth functionality for the new HTML structure
+function updateAuthUI() {
+  const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+  const authButtons = document.getElementById('authButtons');
+  
+  if (currentUser && authButtons) {
+    const loginBtn = authButtons.querySelector('.login-btn');
+    const signupBtn = authButtons.querySelector('.signup-btn');
+    const userAuthSection = authButtons.querySelector('.user-auth-section');
+    const userName = document.getElementById('userName');
+    
+    if (loginBtn && signupBtn && userAuthSection && userName) {
+      // Hide login/signup buttons
+      loginBtn.style.display = 'none';
+      signupBtn.style.display = 'none';
+      
+      // Show user section
+      userAuthSection.style.display = 'flex';
+      userName.textContent = currentUser.name || 'User';
+      
+      // Update CTA buttons for logged-in users
+      const ctaButtons = document.querySelector('.cta-buttons');
+      if (ctaButtons) {
+        const startLearningBtn = ctaButtons.querySelector('.btn-primary');
+        if (startLearningBtn) {
+          startLearningBtn.innerHTML = '<i class="fas fa-graduation-cap"></i> Continue Learning';
+          startLearningBtn.href = 'dashboard.html';
+        }
+        
+        const practiceQuizBtn = ctaButtons.querySelector('.btn-secondary');
+        if (practiceQuizBtn) {
+          practiceQuizBtn.innerHTML = '<i class="fas fa-tachometer-alt"></i> Go to Dashboard';
+          practiceQuizBtn.href = 'dashboard.html';
+        }
+      }
+    }
+  }
 }
+
+// Setup logout functionality
+function setupLogoutHandlers() {
+  const logoutBtn = document.getElementById('headerLogout');
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (confirm('Are you sure you want to logout?')) {
+        localStorage.removeItem('currentUser');
+        localStorage.removeItem('userProgress');
+        window.location.href = 'index.html';
+      }
+    });
+  }
+}
+
+// Initialize when page loads
+document.addEventListener('DOMContentLoaded', () => {
+  updateAuthUI();
+  setupLogoutHandlers();
+});

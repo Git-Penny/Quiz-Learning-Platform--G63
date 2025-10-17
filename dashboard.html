@@ -20,19 +20,12 @@
                 <span>Quizr</span>
             </div>
 
-            <div class="nav-center">
-                <a href="index.html"><i class="fas fa-home"></i> Home</a>
-                <a href="dashboard.html" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-                <a href="leaderboard.html"><i class="fas fa-trophy"></i> Leaderboard</a>
-            </div>
-
             <div class="nav-right">
                 <div class="dashboard-user-menu">
-                    <span class="dashboard-user-name">Welcome, Student!</span>
+                    <span class="dashboard-user-name">Welcome, <span id="dashboardUserName">Student</span>!</span>
                     <div class="dashboard-user-dropdown">
                         <a href="profile.html"><i class="fas fa-user"></i> Profile</a>
-                        <a href="settings.html"><i class="fas fa-cog"></i> Settings</a>
-                        <a href="index.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                        <a href="#" id="headerLogoutDashboard"><i class="fas fa-sign-out-alt"></i> Logout</a>
                     </div>
                 </div>
             </div>
@@ -51,27 +44,25 @@
         <!-- Sidebar -->
         <aside class="dashboard-sidebar" id="sidebar">
             <div class="dashboard-sidebar-header">
-                <!-- Desktop hamburger (visible on larger screens) -->
                 <button class="dashboard-hamburger-menu" id="desktopHamburger">
                     <i class="fas fa-bars" id="desktopHamburgerIcon"></i>
-                </button>
-                <div class="logo">
-                    <span>Quizr</span>
-                </div>
-                <button class="dashboard-close-sidebar" id="closeSidebar">
-                    <i class="fas fa-times"></i>
                 </button>
             </div>
             
             <nav class="dashboard-sidebar-nav">
                 <!-- Main Navigation Items -->
                 <div class="dashboard-sidebar-main-nav">
+                    <a href="index.html" class="dashboard-sidebar-item" data-tooltip="Home">
+                        <i class="fas fa-home"></i>
+                        <span>Home</span>
+                    </a>
+
                     <a href="dashboard.html" class="dashboard-sidebar-item active" data-tooltip="Dashboard">
                         <i class="fas fa-tachometer-alt"></i>
                         <span>Dashboard</span>
                     </a>
                     
-                    <a href="progress.html" class="dashboard-sidebar-item" data-tooltip="Progress">
+                    <a href="#progress" class="dashboard-sidebar-item" data-tooltip="Progress" id="progressSidebarLink">
                         <i class="fas fa-chart-line"></i>
                         <span>Progress</span>
                     </a>
@@ -84,14 +75,14 @@
                 
                 <!-- Bottom Navigation Items (Settings & Profile) -->
                 <div class="dashboard-sidebar-bottom-nav">
-                    <a href="settings.html" class="dashboard-sidebar-item" data-tooltip="Settings">
-                        <i class="fas fa-cog"></i>
-                        <span>Settings</span>
-                    </a>
-                    
                     <a href="profile.html" class="dashboard-sidebar-item" data-tooltip="Profile">
                         <i class="fas fa-user"></i>
                         <span>Profile</span>
+                    </a>
+
+                    <a href="index.html" class="dashboard-sidebar-item" data-tooltip="Logout" id="logoutSidebarLink">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
                     </a>
                 </div>
             </nav>
@@ -108,22 +99,22 @@
                         <div class="dashboard-stat-card">
                             <i class="fas fa-check-circle"></i>
                             <div>
-                                <h3>0</h3>
+                                <h3 class="stat-completed">0</h3>
                                 <span>Quizzes Completed</span>
                             </div>
                         </div>
                         <div class="dashboard-stat-card">
                             <i class="fas fa-star"></i>
                             <div>
-                                <h3>0%</h3>
+                                <h3 class="stat-average">0%</h3>
                                 <span>Average Score</span>
                             </div>
                         </div>
                         <div class="dashboard-stat-card">
-                            <i class="fas fa-clock"></i>
+                            <i class="fas fa-fire"></i>
                             <div>
-                                <h3>0</h3>
-                                <span>In Progress</span>
+                                <h3 class="stat-streak">0</h3>
+                                <span>Day Streak</span>
                             </div>
                         </div>
                     </div>
@@ -208,15 +199,59 @@
                 </div>
             </section>
 
-            <!-- Recent Activity -->
+            <!-- Activity & Progress Section -->
             <section class="dashboard-activity-section">
-                <h2>Recent Activity</h2>
-                <div class="dashboard-activity-list">
-                    <div class="dashboard-activity-item">
-                        <i class="fas fa-info-circle dashboard-primary"></i>
-                        <div class="dashboard-activity-content">
-                            <p>Welcome to Quizr! Start your first quiz.</p>
-                            <span class="dashboard-activity-time">Just now</span>
+                <div class="activity-header">
+                    <h2>Progress & Activity</h2>
+                    <div class="progress-toggle">
+                        <button class="toggle-btn active" data-view="activity">Recent Activity</button>
+                        <button class="toggle-btn" data-view="progress" id="progress">Your Progress</button>
+                    </div>
+                </div>
+
+                <!-- Recent Activity View -->
+                <div class="activity-view active" id="activityView">
+                    <div class="dashboard-activity-list">
+                        <div class="dashboard-activity-item">
+                            <i class="fas fa-info-circle dashboard-primary"></i>
+                            <div class="dashboard-activity-content">
+                                <p>Welcome to Quizr! Start your first quiz to track your progress.</p>
+                                <span class="dashboard-activity-time">Just now</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Progress View -->
+                <div class="progress-view" id="progressView">
+                    <!-- Overall Progress -->
+                    <div class="overall-progress">
+                        <h4>Overall Learning Progress</h4>
+                        <div class="progress-summary">
+                            <div class="progress-metric">
+                                <span class="metric-value">0%</span>
+                                <span class="metric-label">Mastery Level</span>
+                            </div>
+                            <div class="progress-metric">
+                                <span class="metric-value">0</span>
+                                <span class="metric-label">Quizzes Taken</span>
+                            </div>
+                            <div class="progress-metric">
+                                <span class="metric-value">0</span>
+                                <span class="metric-label">Day Streak</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category Progress -->
+                    <div class="category-progress">
+                        <h4>Your Category Progress</h4>
+                        <div class="progress-list" id="progressList">
+                            <div class="empty-progress">
+                                <i class="fas fa-chart-line"></i>
+                                <p>No quizzes completed yet</p>
+                                <small>Start learning to see your progress here</small>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -224,111 +259,41 @@
         </main>
     </div>
 
+    <script type="module" src="js/dashboard.js"></script>
+
     <script>
-        // Mobile hamburger functionality
+        // Basic sidebar functionality for results page
         const mobileHamburger = document.getElementById('mobileHamburger');
-        const mobileHamburgerIcon = document.getElementById('mobileHamburgerIcon');
         const desktopHamburger = document.getElementById('desktopHamburger');
-        const desktopHamburgerIcon = document.getElementById('desktopHamburgerIcon');
         const sidebar = document.getElementById('sidebar');
         const overlay = document.getElementById('overlay');
 
-        // Toggle sidebar function
         function toggleSidebar() {
             const isMobile = window.innerWidth <= 1024;
             
             if (isMobile) {
-                // Mobile behavior - toggle open/close
                 sidebar.classList.toggle('open');
                 overlay.classList.toggle('active');
                 document.body.style.overflow = sidebar.classList.contains('open') ? 'hidden' : '';
-                
-                // Update mobile hamburger icon
-                if (sidebar.classList.contains('open')) {
-                    mobileHamburgerIcon.className = 'fas fa-times';
-                } else {
-                    mobileHamburgerIcon.className = 'fas fa-bars';
-                }
             } else {
-                // Desktop behavior - toggle collapsed state
                 sidebar.classList.toggle('collapsed');
-                
-                // Update desktop hamburger icon
-                if (sidebar.classList.contains('collapsed')) {
-                    desktopHamburgerIcon.className = 'fas fa-bars';
-                } else {
-                    desktopHamburgerIcon.className = 'fas fa-times';
-                }
             }
         }
 
-        // Event listeners for both hamburger buttons
-        mobileHamburger.addEventListener('click', toggleSidebar);
-        desktopHamburger.addEventListener('click', toggleSidebar);
-
-        // Close sidebar when clicking overlay on mobile
-        overlay.addEventListener('click', function() {
-            if (window.innerWidth <= 1024) {
-                toggleSidebar();
-            }
-        });
-
-        // Handle window resize
-        window.addEventListener('resize', function() {
-            if (window.innerWidth > 1024) {
-                // Reset for desktop
-                sidebar.classList.remove('open');
-                overlay.classList.remove('active');
-                document.body.style.overflow = '';
-                mobileHamburgerIcon.className = 'fas fa-bars';
-            } else {
-                // Reset for mobile
-                sidebar.classList.remove('collapsed');
-                sidebar.classList.remove('open');
-                overlay.classList.remove('active');
-                document.body.style.overflow = '';
-                mobileHamburgerIcon.className = 'fas fa-bars';
-                desktopHamburgerIcon.className = 'fas fa-bars';
-            }
-        });
-
-        // User dropdown functionality
-        const userMenu = document.querySelector('.dashboard-user-menu');
-        const userDropdown = document.querySelector('.dashboard-user-dropdown');
-
-        userMenu.addEventListener('click', function(e) {
-            e.stopPropagation();
-            userDropdown.style.display = userDropdown.style.display === 'block' ? 'none' : 'block';
-        });
-
-        // Close dropdown when clicking outside
-        document.addEventListener('click', function() {
-            userDropdown.style.display = 'none';
-        });
-
-        // Sidebar active state
-        const sidebarItems = document.querySelectorAll('.dashboard-sidebar-item');
-        sidebarItems.forEach(item => {
-            item.addEventListener('click', function() {
-                sidebarItems.forEach(i => i.classList.remove('active'));
-                this.classList.add('active');
-                
-                // Close sidebar on mobile after selection
+        if (mobileHamburger) {
+            mobileHamburger.addEventListener('click', toggleSidebar);
+        }
+        if (desktopHamburger) {
+            desktopHamburger.addEventListener('click', toggleSidebar);
+        }
+        if (overlay) {
+            overlay.addEventListener('click', function() {
                 if (window.innerWidth <= 1024) {
                     toggleSidebar();
                 }
             });
-        });
-
-        // Initialize sidebar state
-        window.addEventListener('load', function() {
-            if (window.innerWidth <= 1024) {
-                sidebar.classList.remove('collapsed');
-                sidebar.classList.remove('open');
-            }
-            mobileHamburgerIcon.className = 'fas fa-bars';
-            desktopHamburgerIcon.className = 'fas fa-bars';
-        });
+        }
     </script>
+
 </body>
 </html>

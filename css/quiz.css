@@ -285,8 +285,8 @@
 }
 
 .question-number.answered {
-    border-color: #4cd964;
-    background: #4cd964;
+    border-color: #4d4d4d;
+    background: #5a5a5a;
     color: white;
 }
 
@@ -324,13 +324,14 @@
 }
 
 .stat-number.answered {
-    background: #4cd964;
+    background: #4d4d4d;
     color: white;
 }
 
 .stat-number.not-answered {
-    background: #6c757d;
-    color: white;
+    background: #ffffff;
+    color:#333;
+    border: 0.9px solid #ccc;
 }
 
 .stat-number.flagged {
@@ -341,6 +342,44 @@
 .stat-label {
     color: #666;
     font-size: 0.9rem;
+}
+
+.educational-feedback {
+    margin: 1.5rem 0;
+    animation: slideIn 0.3s ease;
+}
+
+.feedback-content {
+    padding: 1.5rem;
+    border-radius: 12px;
+    border-left: 4px solid;
+}
+
+.feedback-content.correct {
+    background: #e8f5e8;
+    border-left-color: #4cd964;
+}
+
+.feedback-content.incorrect {
+    background: #ffebee;
+    border-left-color: #ff6b6b;
+}
+
+.feedback-content h4 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.1rem;
+}
+
+.explanation {
+    margin: 0;
+    color: #333;
+    line-height: 1.5;
+    font-size: 0.95rem;
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 /* Placeholder States */

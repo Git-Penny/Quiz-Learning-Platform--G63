@@ -19,7 +19,6 @@
             </div>
 
             <div class="nav-center">
-                <a href="index.html"><i class="fas fa-home"></i> Home</a>
                 <div class="dropdown">
                     <a href="#" class="dropdown-toggle"><i class="fas fa-layer-group"></i> Categories <i class="fas fa-chevron-down"></i></a>
                     <div class="dropdown-menu">
@@ -36,9 +35,21 @@
                 <a href="#contact-section" class="smooth-scroll"><i class="fas fa-envelope"></i> Contact</a>
             </div>
 
-            <div class="nav-right">
-                <a href="login.html"><i class="fas fa-sign-in-alt"></i> Login</a>
-                <a href="register.html"><i class="fas fa-user-plus"></i> Sign Up</a>  
+            <div class="nav-right" id="authButtons">
+                <a href="login.html" class="auth-btn login-btn">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </a>
+                <a href="register.html" class="auth-btn signup-btn">
+                    <i class="fas fa-user-plus"></i> Sign Up
+                </a>  
+
+                <!--Logged in users-->
+                <div class="user-auth-section" style="display: none;">
+                    <span class="welcome-text">Welcome, <span id="userName">User</span></span>
+                    <a href="#" class="auth-btn logout-btn" id="headerLogout">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </div>
             </div>
         </nav>
     </header>
@@ -279,6 +290,6 @@
         </div>
     </footer>
 
-    <script src="js/main.js"></script>
+    <script src="js/script.js"></script>
 </body>
 </html>
