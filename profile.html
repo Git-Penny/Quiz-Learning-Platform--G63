@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Profile - Quizr</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body class="dashboard-body">
+    <!-- Header -->
+    <header class="dashboard-header">
+        <nav>
+            <div class="logo">
+                <img src="images/QUIZR (2).png" height="35" width="43" alt="Quizr Logo">
+                <span>Quizr</span>
+            </div>
+
+            <div class="nav-right">
+                <div class="dashboard-user-menu">
+                    <span class="dashboard-user-name">Welcome, <span id="dashboardUserName">Student</span>!</span>
+                    <div class="dashboard-user-dropdown">
+                        <a href="profile.html" class="active"><i class="fas fa-user"></i> Profile</a>
+                        <a href="index.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Mobile Hamburger Menu -->
+    <button class="dashboard-mobile-hamburger" id="mobileHamburger">
+        <i class="fas fa-bars" id="mobileHamburgerIcon"></i>
+    </button>
+
+    <!-- Overlay for mobile -->
+    <div class="dashboard-overlay" id="overlay"></div>
+
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="dashboard-sidebar" id="sidebar">
+            <div class="dashboard-sidebar-header">
+                <button class="dashboard-hamburger-menu" id="desktopHamburger">
+                    <i class="fas fa-bars" id="desktopHamburgerIcon"></i>
+                </button>
+            </div>
+            
+            <nav class="dashboard-sidebar-nav">
+                <!-- Main Navigation Items -->
+                <div class="dashboard-sidebar-main-nav">
+                    <a href="index.html" class="dashboard-sidebar-item" data-tooltip="Home">
+                        <i class="fas fa-home"></i>
+                        <span>Home</span>
+                    </a>
+                    
+                    <a href="dashboard.html" class="dashboard-sidebar-item" data-tooltip="Dashboard">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    
+                    <a href="#progress" class="dashboard-sidebar-item" data-tooltip="Progress" id="progressSidebarLink">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Progress</span>
+                    </a>
+                    
+                    <a href="leaderboard.html" class="dashboard-sidebar-item" data-tooltip="Leaderboard">
+                        <i class="fas fa-trophy"></i>
+                        <span>Leaderboard</span>
+                    </a>
+                </div>
+                
+                <!-- Bottom Navigation Items -->
+                <div class="dashboard-sidebar-bottom-nav">
+                    <a href="profile.html" class="dashboard-sidebar-item active" data-tooltip="Profile">
+                        <i class="fas fa-user"></i>
+                        <span>Profile</span>
+                    </a>
+
+                    <a href="index.html" class="dashboard-sidebar-item" data-tooltip="Logout" id="logoutSidebarLink">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </a>
+                </div>
+            </nav>
+        </aside>
+       
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <!-- Profile Header -->
+            <section class="dashboard-welcome-section">
+                <div class="dashboard-welcome-content">
+                    <h1>Your Profile <i class="fas fa-user-circle"></i></h1>
+                    <p>Manage your account and view your learning statistics</p>
+                </div>
+            </section>
+
+            <!-- Profile Content -->
+            <section class="dashboard-profile-section">
+                <div class="profile-grid">
+                    <!-- User Info Card -->
+                    <div class="profile-card">
+                        <div class="profile-header">
+                            <i class="fas fa-user-circle profile-icon"></i>
+                            <h3>Personal Information</h3>
+                        </div>
+                        <div class="profile-info">
+                            <div class="info-item">
+                                <label>Full Name:</label>
+                                <span id="profileFullName">Loading...</span>
+                            </div>
+                            <div class="info-item">
+                                <label>Email:</label>
+                                <span id="profileEmail">Loading...</span>
+                            </div>
+                            <div class="info-item">
+                                <label>Member Since:</label>
+                                <span id="profileJoinDate">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Learning Stats Card -->
+                    <div class="profile-card">
+                        <div class="profile-header">
+                            <i class="fas fa-chart-line profile-icon"></i>
+                            <h3>Learning Statistics</h3>
+                        </div>
+                        <div class="profile-stats">
+                            <div class="stat-item">
+                                <i class="fas fa-check-circle"></i>
+                                <div>
+                                    <h4 id="profileQuizzesCompleted">0</h4>
+                                    <span>Quizzes Completed</span>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <i class="fas fa-star"></i>
+                                <div>
+                                    <h4 id="profileAverageScore">0%</h4>
+                                    <span>Average Score</span>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <i class="fas fa-fire"></i>
+                                <div>
+                                    <h4 id="profileStreak">0</h4>
+                                    <span>Day Streak</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions Card -->
+                    <div class="profile-card">
+                        <div class="profile-header">
+                            <i class="fas fa-bolt profile-icon"></i>
+                            <h3>Quick Actions</h3>
+                        </div>
+                        <div class="profile-actions">
+                            <a href="dashboard.html" class="action-btn">
+                                <i class="fas fa-tachometer-alt"></i>
+                                <span>Continue Learning</span>
+                            </a>
+                            <a href="leaderboard.html" class="action-btn">
+                                <i class="fas fa-trophy"></i>
+                                <span>View Leaderboard</span>
+                            </a>
+                            <button class="action-btn" id="editProfileBtn">
+                                <i class="fas fa-edit"></i>
+                                <span>Edit Profile</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script type="module" src="js/dashboard.js"></script>
+    <script src="js/profile.js"></script>
+</body>
+</html>
