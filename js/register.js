@@ -44,6 +44,13 @@ form.addEventListener('submit', function(e) {
 
     // Simulate API call
     setTimeout(() => {
+
+        localStorage.setItem('currentUser', JSON.stringify({
+            id: Date.now(), // or generate a real ID
+            name: fullName,
+            email: email
+        }));
+
         alert('✅ Account created successfully!');
         window.location.href = 'dashboard.html';
     }, 1500);

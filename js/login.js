@@ -34,6 +34,13 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       const user = await login(email, password);
       if (user) {
+
+        localStorage.setItem('currentUser', JSON.stringify({
+          id: user.id,
+          name: user.name || user.username,
+          email: user.email
+        }));
+
         showMessage(`✅ Welcome back, ${user.name || 'user'}!`, 'success');
         setTimeout(() => (window.location.href = 'dashboard.html'), 1000);
       } else {
