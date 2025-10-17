@@ -2,7 +2,7 @@
 const form = document.querySelector('form');
 const submitBtn = form.querySelector('.submit-btn');
 
-form.addEventListener('submit', function(e) {
+form.addEventListener('submit', function (e) {
     e.preventDefault();
 
     // Grab form values
@@ -42,24 +42,36 @@ form.addEventListener('submit', function(e) {
     submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating Account...';
     submitBtn.disabled = true;
 
-    // Simulate API call
-    setTimeout(() => {
-    function getFirstName(fullName) {
-        if (!fullName) return 'User';
-        
-        const names = fullName.trim().split(/\s+/);
-        return names[0] || 'User';
-    }
+    // === Real backend registration ===
+    const userData = {
+        username: email.split('@')[0],
+        full_name: fullName,
+        email: email,
+        password: password
+    };
 
-    const firstName = getFirstName(fullName);
+   fetch('http://localhost/Quiz-Learning-Platform--G63/api/register.php', {
 
-    localStorage.setItem('currentUser', JSON.stringify({
-        id: Date.now(),
-        name: firstName,
-        email: email
-    }));
-
-    alert('✅ Account created successfully!');
-    window.location.href = 'dashboard.html';
-}, 1500);
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(userData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('✅ Account created successfully!');
+            window.location.href = 'login.html';
+        } else {
+            alert(`❌ ${data.error || 'Registration failed.'}`);
+        }
+    })
+    .catch(err => {
+        console.error(err);
+        alert('⚠️ Network or server error.');
+    })
+    .finally(() => {
+        // Always restore button state
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+    });
 });

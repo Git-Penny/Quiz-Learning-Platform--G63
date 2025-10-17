@@ -1,23 +1,31 @@
 <?php
-header('Content-Type: application/json');
 require __DIR__ . '/../config/db.php';
+header('Content-Type: application/json');
 
-$data = json_decode(file_get_contents("php://input"), true);
+// Collect POST data
+$name = $_POST['name'] ?? '';
+$email = $_POST['email'] ?? '';
+$type = $_POST['type'] ?? 'other';
+$message = $_POST['message'] ?? '';
+$rating = $_POST['rating'] ?? null;
 
-$name = trim($data['name'] ?? '');
-$email = trim($data['email'] ?? '');
-$type = $data['type'] ?? 'other';
-$message = trim($data['message'] ?? '');
-$rating = intval($data['rating'] ?? 0);
-
-if (!$name || !$email || !$message) {
-    echo json_encode(['success' => false, 'message' => 'Please fill all required fields']);
+// Basic validation
+if (empty($name) || empty($email) || empty($message)) {
+    echo json_encode(["status" => "error", "message" => "All fields are required"]);
     exit;
 }
 
-$stmt = $pdo->prepare("INSERT INTO feedback (name,email,type,message,rating)
-                       VALUES (:n,:e,:t,:m,:r)");
-$stmt->execute([':n'=>$name, ':e'=>$email, ':t'=>$type, ':m'=>$message, ':r'=>$rating]);
+// Insert into DB
+$sql = "INSERT INTO feedback (name, email, type, message, rating) VALUES (?, ?, ?, ?, ?)";
+$stmt = mysqli_prepare($conn, $sql);
+mysqli_stmt_bind_param($stmt, "ssssi", $name, $email, $type, $message, $rating);
+$success = mysqli_stmt_execute($stmt);
 
-echo json_encode(['success'=>true,'message'=>'Feedback submitted successfully']);
+if ($success) {
+    echo json_encode(["status" => "success", "message" => "Feedback submitted successfully!"]);
+} else {
+    echo json_encode(["status" => "error", "message" => "Database error", "details" => mysqli_error($conn)]);
+}
+
+mysqli_close($conn);
 ?>
