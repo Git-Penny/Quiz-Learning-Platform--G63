@@ -1,4 +1,54 @@
-import { getCurrentUser, logout } from './auth.js';
+
+
+console.log("📊 Loading dashboard stats...");
+
+// Check authentication
+const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+if (!currentUser) {
+    window.location.href = 'login.html';
+}
+
+// Update welcome message
+document.addEventListener('DOMContentLoaded', async () => {
+    // Update user name in header
+    const userNameEl = document.querySelector('.dashboard-user-name');
+    if (userNameEl) {
+        userNameEl.textContent = `Welcome, ${currentUser.name || currentUser.username}!`;
+    }
+    
+    // Fetch user statistics
+    try {
+        const response = await fetch(`api/get_user_stats.php?user_id=${currentUser.id}`);
+        const data = await response.json();
+        
+        if (data.success) {
+            updateDashboardStats(data.stats);
+        }
+    } catch (err) {
+        console.error("Error loading user stats:", err);
+    }
+});
+
+// Update dashboard stats
+function updateDashboardStats(stats) {
+    // Update total quizzes
+    const quizzesEl = document.getElementById('totalQuizzes');
+    if (quizzesEl) quizzesEl.textContent = stats.quizzes_taken || 0;
+    
+    // Update total score
+    const scoreEl = document.getElementById('totalScore');
+    if (scoreEl) scoreEl.textContent = stats.total_score || 0;
+    
+    // Update average accuracy
+    const accuracyEl = document.getElementById('avgAccuracy');
+    if (accuracyEl) accuracyEl.textContent = `${stats.avg_accuracy || 0}%`;
+    
+    // Update rank
+    const rankEl = document.getElementById('userRank');
+    if (rankEl) rankEl.textContent = `#${stats.rank || 'N/A'}`;
+    
+    console.log("✅ Dashboard stats updated:", stats);
+}
 
 document.addEventListener('DOMContentLoaded', () => {
   const user = getCurrentUser();
