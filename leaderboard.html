@@ -66,7 +66,7 @@
                         <span>Dashboard</span>
                     </a>
                     
-                    <a href="progress.html" class="dashboard-sidebar-item">
+                    <a href="#progress" class="dashboard-sidebar-item" data-tooltip="Progress" id="progressSidebarLink">
                         <i class="fas fa-chart-line"></i>
                         <span>Progress</span>
                     </a>
@@ -79,14 +79,19 @@
                 
                 <!-- Bottom Navigation Items -->
                 <div class="dashboard-sidebar-bottom-nav">
-                    <a href="settings.html" class="dashboard-sidebar-item">
-                        <i class="fas fa-cog"></i>
-                        <span>Settings</span>
-                    </a>
-                    
-                    <a href="profile.html" class="dashboard-sidebar-item">
+                    <a href="profile.html" class="dashboard-sidebar-item" data-tooltip="Profile">
                         <i class="fas fa-user"></i>
                         <span>Profile</span>
+                    </a>
+
+                    <a href="admin/admin.html" class="dashboard-sidebar-item" data-tooltip="Admin">
+                        <i class="fas fa-cogs"></i>
+                        <span>Admin Panel</span>
+                    </a>
+
+                    <a href="index.html" class="dashboard-sidebar-item" data-tooltip="Logout" id="logoutSidebarLink">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
                     </a>
                 </div>
             </nav>

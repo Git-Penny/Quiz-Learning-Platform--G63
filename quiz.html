@@ -82,6 +82,23 @@
                         <span>Profile</span>
                     </a>
 
+                    <div class="dashboard-sidebar-bottom-nav">
+                    <a href="profile.html" class="dashboard-sidebar-item" data-tooltip="Profile">
+                        <i class="fas fa-user"></i>
+                        <span>Profile</span>
+                    </a>
+
+                    <a href="admin/admin.html" class="dashboard-sidebar-item" data-tooltip="Admin">
+                        <i class="fas fa-cogs"></i>
+                        <span>Admin Panel</span>
+                    </a>
+
+                    <a href="index.html" class="dashboard-sidebar-item" data-tooltip="Logout" id="logoutSidebarLink">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </a>
+                </div>
+
                     <a href="index.html" class="dashboard-sidebar-item" data-tooltip="Logout" id="logoutSidebarLink">
                         <i class="fas fa-sign-out-alt"></i>
                         <span>Logout</span>
@@ -102,7 +119,6 @@
                         </div>
                         <div class="quiz-stats">
                             <span class="question-counter">Question <span id="currentQuestionNumber">1</span> of <span id="totalQuestions">10</span></span>
-                            <span class="time-remaining">15:00</span>
                         </div>
                     </div>
                     
@@ -202,8 +218,9 @@
         </main>
     </div>
 
-    <!-- Simple script for sidebar functionality only -->
-    <script src="js/quiz.js">
+    <script src="js/quiz.js"></script>
+
+    <script>
         // Basic sidebar toggle functionality
         const mobileHamburger = document.getElementById('mobileHamburger');
         const desktopHamburger = document.getElementById('desktopHamburger');

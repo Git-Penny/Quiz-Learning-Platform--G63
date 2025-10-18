@@ -80,6 +80,11 @@
                         <span>Profile</span>
                     </a>
 
+                    <a href="admin/admin.html" class="dashboard-sidebar-item" data-tooltip="Admin">
+                        <i class="fas fa-cogs"></i>
+                        <span>Admin Panel</span>
+                    </a>
+
                     <a href="index.html" class="dashboard-sidebar-item" data-tooltip="Logout" id="logoutSidebarLink">
                         <i class="fas fa-sign-out-alt"></i>
                         <span>Logout</span>
@@ -182,5 +187,39 @@
 
     <script type="module" src="js/dashboard.js"></script>
     <script src="js/profile.js"></script>
+
+    <script>
+        // Basic sidebar functionality 
+        const mobileHamburger = document.getElementById('mobileHamburger');
+        const desktopHamburger = document.getElementById('desktopHamburger');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+
+        function toggleSidebar() {
+            const isMobile = window.innerWidth <= 1024;
+            
+            if (isMobile) {
+                sidebar.classList.toggle('open');
+                overlay.classList.toggle('active');
+                document.body.style.overflow = sidebar.classList.contains('open') ? 'hidden' : '';
+            } else {
+                sidebar.classList.toggle('collapsed');
+            }
+        }
+
+        if (mobileHamburger) {
+            mobileHamburger.addEventListener('click', toggleSidebar);
+        }
+        if (desktopHamburger) {
+            desktopHamburger.addEventListener('click', toggleSidebar);
+        }
+        if (overlay) {
+            overlay.addEventListener('click', function() {
+                if (window.innerWidth <= 1024) {
+                    toggleSidebar();
+                }
+            });
+        }
+    </script>    
 </body>
 </html>

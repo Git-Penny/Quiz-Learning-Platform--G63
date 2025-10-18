@@ -257,10 +257,6 @@
     display: none;
 }
 
-.dashboard-close-sidebar:hover {
-    color: #c62828;
-}
-
 .dashboard-sidebar-nav {
     display: flex;
     flex-direction: column;
@@ -291,6 +287,12 @@
     position: relative;
     overflow: hidden;
 }
+
+#admin-select{
+    padding: 1rem 1.4rem;
+    padding-left: 0.6rem;
+}
+
 
 /* Align items to left when expanded */
 .dashboard-sidebar:not(.collapsed) .dashboard-sidebar-item {
