@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Admin Login - Quizr</title>
+    <link rel="stylesheet" href="css/admin-login.css">
+</head>
+<body class="auth-body">
+    <div class="auth-wrapper">
+        <!-- Admin Login Form -->
+        <div class="form-container">
+            <div class="auth-logo">
+                <div class="logo">
+                    <img src="../images/QUIZR (2).png" alt="Quizr Logo">
+                    <span>Quizr</span>
+                </div>
+                <p>Admin Panel</p>
+            </div>
+            
+            <h2>Admin Login</h2>
+            
+            <form id="adminLoginForm">
+                <div class="form-group">
+                    <input type="email" id="adminEmail" placeholder="Email" required />
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="adminPassword" placeholder="Password" required />
+                    <i class="fas fa-lock"></i>
+                </div>
+                
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/admin-login.js"></script>
+</body>
+</html>
