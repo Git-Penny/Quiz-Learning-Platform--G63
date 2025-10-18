@@ -29,7 +29,6 @@
                     <span class="dashboard-user-name">Welcome, Student!</span>
                     <div class="dashboard-user-dropdown">
                         <a href="profile.html"><i class="fas fa-user"></i> Profile</a>
-                        <a href="settings.html"><i class="fas fa-cog"></i> Settings</a>
                         <a href="index.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
                     </div>
                 </div>
@@ -79,14 +78,19 @@
                 
                 <!-- Bottom Navigation Items -->
                 <div class="dashboard-sidebar-bottom-nav">
-                    <a href="settings.html" class="dashboard-sidebar-item">
-                        <i class="fas fa-cog"></i>
-                        <span>Settings</span>
-                    </a>
-                    
-                    <a href="profile.html" class="dashboard-sidebar-item">
+                    <a href="profile.html" class="dashboard-sidebar-item" data-tooltip="Profile">
                         <i class="fas fa-user"></i>
                         <span>Profile</span>
+                    </a>
+
+                    <a href="admin/admin.html" class="dashboard-sidebar-item" id="admin-select" data-tooltip="Admin">
+                        <i class="fas fa-cogs"></i>
+                        <span>Admin Panel</span>
+                    </a>
+
+                    <a href="index.html" class="dashboard-sidebar-item" data-tooltip="Logout" id="logoutSidebarLink">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
                     </a>
                 </div>
             </nav>
