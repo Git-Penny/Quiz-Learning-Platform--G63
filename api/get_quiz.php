@@ -1,6 +1,6 @@
 <?php
 // ==========================================================
-// QUIZR - Get Quiz Questions by Category
+// QUIZR - Get Quiz Questions by Category (WITH RANDOMIZATION)
 // ==========================================================
 
 // ✅ Disable error display in JSON responses
@@ -22,6 +22,9 @@ if (!$conn) {
 
 // ✅ Get the category ID or name from the query string
 $category = isset($_GET['category']) ? $_GET['category'] : null;
+
+// ✅ Get number of questions (default 10, max 30)
+$numQuestions = isset($_GET['num']) ? min(intval($_GET['num']), 30) : 10;
 
 if (!$category) {
     echo json_encode(["error" => "No category specified"]);
@@ -45,15 +48,15 @@ if (!$category_id) {
     exit;
 }
 
-// ✅ Fetch questions for the category (using prepared statement for security)
+// ✅ Fetch questions for the category with RANDOM ORDER
 $query = "SELECT id, question_text, difficulty, explanation 
           FROM questions 
           WHERE category_id = ? 
-          ORDER BY id ASC 
-          LIMIT 10";
+          ORDER BY RAND() 
+          LIMIT ?";
 
 $stmt = mysqli_prepare($conn, $query);
-mysqli_stmt_bind_param($stmt, "i", $category_id);
+mysqli_stmt_bind_param($stmt, "ii", $category_id, $numQuestions);
 mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 
@@ -84,6 +87,9 @@ while ($row = mysqli_fetch_assoc($result)) {
             ];
         }
     }
+    
+    // ✅ RANDOMIZE THE CHOICES ORDER TOO!
+    shuffle($choices);
     
     $questions[] = [
         "id" => (int)$row['id'],
