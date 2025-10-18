@@ -14,7 +14,7 @@
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     position: sticky;
     top: 0;
-    z-index: 100;
+    z-index: 1000;
 }
 
 .dashboard-header nav {
@@ -117,7 +117,7 @@
     color: #333;
     cursor: pointer;
     transition: all 0.3s ease;
-    z-index: 101;
+    z-index: 1001;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
@@ -201,7 +201,7 @@
     height: calc(100vh - 70px);
     position: sticky;
     top: 70px;
-    z-index: 99;
+    z-index: 999;
     display: flex;
     flex-direction: column;
 }
@@ -263,6 +263,7 @@
     flex: 1;
     padding: 0 1rem;
     transition: all 0.3s ease;
+    overflow-x: hidden;
 }
 
 .dashboard-sidebar-bottom-nav .dashboard-sidebar-item {
@@ -288,26 +289,19 @@
     overflow: hidden;
 }
 
-#admin-select{
-    padding: 1rem 1.4rem;
-    padding-left: 0.6rem;
-}
-
-
-/* Align items to left when expanded */
 .dashboard-sidebar:not(.collapsed) .dashboard-sidebar-item {
     justify-content: flex-start;
     padding-left: 0.6rem;
 }
 
-/* Collapsed state - only show icons */
+/* Collapsed state */
 .dashboard-sidebar.collapsed .dashboard-sidebar-item {
     padding: 1rem;
     justify-content: center;
     margin: 0;
 }
 
-/* Hide text when collapsed */
+
 .dashboard-sidebar.collapsed .dashboard-sidebar-item span {
     display: none;
 }
@@ -1007,7 +1001,7 @@
         transform: translateX(-100%);
         box-shadow: 2px 0 20px rgba(0,0,0,0.1);
         width: 280px;
-        z-index: 1000;
+        z-index: 998;
         transition: transform 0.3s ease;
     }
     
@@ -1037,6 +1031,7 @@
 
     .dashboard-mobile-hamburger {
         display: flex;
+        z-index: 1001;
     }
     
     .dashboard-sidebar-header .dashboard-hamburger-menu {
@@ -1156,6 +1151,10 @@
         width: 100%;
     }
     
+    .dashboard-header{
+        z-index: 1000;
+    }
+
     .dashboard-header nav {
         height: 60px;
         padding: 0 1rem;
@@ -1173,6 +1172,7 @@
         top: 70px;
         width: 40px;
         height: 40px;
+        z-index: 1001;
     }
     
     .dashboard-quick-stats {
