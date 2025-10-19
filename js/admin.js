@@ -1,350 +1,338 @@
-// ==========================================================
-// QUIZR - Admin Panel JavaScript
-// ==========================================================
-
 console.log("🔧 Admin.js loaded");
 
-// API Base URL
-const API_URL = '../api/admin/admin_api.php';
-
-// State
-let questions = [];
-let editingQuestionId = null;
-
-// Category ID mapping
-const categoryMap = {
-    'Independence Era': 1,
-    'Colonial History': 2,
-    'Pre-Colonial Era': 3,
-    'Genocide & Resistance': 4,
-    'Culture & Heritage': 5,
-    'Liberation Struggles': 6
-};
-
-// DOM Elements
-const questionForm = document.getElementById('questionForm');
+// Select elements
+const form = document.getElementById('questionForm');
+const resetFormBtn = document.getElementById('resetForm');
 const submitBtn = document.getElementById('submitQuestion');
 const updateBtn = document.getElementById('updateQuestion');
-const resetBtn = document.getElementById('resetForm');
+const questionCategory = document.getElementById('questionCategory');
+const questionText = document.getElementById('questionText');
+const optionA = document.getElementById('optionA');
+const optionB = document.getElementById('optionB');
+const optionC = document.getElementById('optionC');
+const optionD = document.getElementById('optionD');
+const correctAnswer = document.getElementById('correctAnswer');
+const questionExplanation = document.getElementById('questionExplanation');
 const questionsTableBody = document.getElementById('questionsTableBody');
-const searchInput = document.getElementById('searchQuestions');
-const filterSelect = document.getElementById('filterCategory');
-const emptyState = document.getElementById('emptyQuestionsState');
+const emptyQuestionsState = document.getElementById('emptyQuestionsState');
+const searchQuestions = document.getElementById('searchQuestions');
+const filterCategory = document.getElementById('filterCategory');
 
-// Initialize
-document.addEventListener('DOMContentLoaded', () => {
-    loadStats();
-    loadQuestions();
-    
-    // Event listeners
-    questionForm.addEventListener('submit', handleSubmit);
-    resetBtn.addEventListener('click', resetForm);
-    searchInput.addEventListener('input', () => loadQuestions());
-    filterSelect.addEventListener('change', () => loadQuestions());
+// Feedback elements
+const feedbackTableBody = document.getElementById('feedbackTableBody');
+const emptyFeedbackState = document.getElementById('emptyFeedbackState');
+const feedbackTypeFilter = document.getElementById('feedbackTypeFilter');
+const refreshFeedbackBtn = document.getElementById('refreshFeedback');
+const feedbackModal = document.getElementById('feedbackModal');
+const modalClose = document.querySelector('.modal-close');
+const closeModalBtn = document.getElementById('closeModal');
+
+// Stats
+const totalQuestionsCount = document.getElementById('totalQuestionsCount');
+const totalUsersCount = document.getElementById('totalUsersCount');
+const totalFeedbackCount = document.getElementById('totalFeedbackCount');
+
+// Load from localStorage
+let questions = JSON.parse(localStorage.getItem('quizr_questions')) || [];
+let editIndex = null;
+let allFeedback = [];
+
+// ==========================================================
+// QUESTIONS MANAGEMENT
+// ==========================================================
+
+// Render Questions Table
+function renderQuestions(filter = '', search = '') {
+    questionsTableBody.innerHTML = '';
+
+    let filtered = questions.filter(q => {
+        const matchesCategory = filter ? q.category === filter : true;
+        const matchesSearch = search
+            ? q.text.toLowerCase().includes(search.toLowerCase())
+            : true;
+        return matchesCategory && matchesSearch;
+    });
+
+    if (filtered.length === 0) {
+        emptyQuestionsState.style.display = 'block';
+    } else {
+        emptyQuestionsState.style.display = 'none';
+    }
+
+    filtered.forEach((q, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${q.text}</td>
+            <td>${q.category}</td>
+            <td>${q.correctAnswer}</td>
+            <td>
+                <button class="btn btn-small btn-success" onclick="editQuestion(${index})"><i class="fas fa-edit"></i></button>
+                <button class="btn btn-small btn-danger" onclick="deleteQuestion(${index})"><i class="fas fa-trash"></i></button>
+            </td>
+        `;
+        questionsTableBody.appendChild(row);
+    });
+
+    totalQuestionsCount.textContent = questions.length;
+}
+
+// Add Question
+form.addEventListener('submit', e => {
+    e.preventDefault();
+
+    const newQuestion = {
+        category: questionCategory.value.trim(),
+        text: questionText.value.trim(),
+        options: {
+            A: optionA.value.trim(),
+            B: optionB.value.trim(),
+            C: optionC.value.trim(),
+            D: optionD.value.trim(),
+        },
+        correctAnswer: correctAnswer.value,
+        explanation: questionExplanation.value.trim(),
+    };
+
+    if (editIndex === null) {
+        questions.push(newQuestion);
+        alert('✅ Question added successfully!');
+    } else {
+        questions[editIndex] = newQuestion;
+        editIndex = null;
+        updateBtn.style.display = 'none';
+        submitBtn.style.display = 'inline-block';
+        alert('✅ Question updated successfully!');
+    }
+
+    localStorage.setItem('quizr_questions', JSON.stringify(questions));
+    renderQuestions();
+    form.reset();
+});
+
+// Edit Question
+window.editQuestion = function (index) {
+    const q = questions[index];
+    questionCategory.value = q.category;
+    questionText.value = q.text;
+    optionA.value = q.options.A;
+    optionB.value = q.options.B;
+    optionC.value = q.options.C;
+    optionD.value = q.options.D;
+    correctAnswer.value = q.correctAnswer;
+    questionExplanation.value = q.explanation;
+
+    editIndex = index;
+    updateBtn.style.display = 'inline-block';
+    submitBtn.style.display = 'none';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+};
+
+// Delete Question
+window.deleteQuestion = function (index) {
+    if (confirm('Are you sure you want to delete this question?')) {
+        questions.splice(index, 1);
+        localStorage.setItem('quizr_questions', JSON.stringify(questions));
+        renderQuestions();
+    }
+};
+
+// Reset Form
+resetFormBtn.addEventListener('click', () => {
+    form.reset();
+    editIndex = null;
+    updateBtn.style.display = 'none';
+    submitBtn.style.display = 'inline-block';
+});
+
+// Search and Filter
+searchQuestions.addEventListener('input', e => {
+    renderQuestions(filterCategory.value, e.target.value);
+});
+
+filterCategory.addEventListener('change', e => {
+    renderQuestions(e.target.value, searchQuestions.value);
 });
 
 // ==========================================================
-// Load Dashboard Stats
+// FEEDBACK MANAGEMENT
 // ==========================================================
-async function loadStats() {
-    try {
-        const response = await fetch(`${API_URL}?action=get_stats`);
-        const data = await response.json();
-        
-        if (data.success) {
-            document.getElementById('totalQuestionsCount').textContent = data.stats.total_questions;
-            document.getElementById('totalCategoriesCount').textContent = data.stats.total_categories;
-            document.getElementById('totalUsersCount').textContent = data.stats.total_users;
-        }
-    } catch (err) {
-        console.error("Error loading stats:", err);
-    }
-}
 
-// ==========================================================
-// Load Questions
-// ==========================================================
-async function loadQuestions() {
+// Fetch feedback from database
+async function loadFeedback(type = '') {
+    console.log("📥 Loading feedback from database...");
+    
     try {
-        const category = filterSelect.value;
-        const search = searchInput.value;
+        const url = type 
+            ? `../api/get_feedback.php?type=${type}` 
+            : '../api/get_feedback.php';
         
-        let url = `${API_URL}?action=get_questions`;
-        if (category) url += `&category=${encodeURIComponent(category)}`;
-        if (search) url += `&search=${encodeURIComponent(search)}`;
+        console.log("📡 Fetching from:", url);
         
         const response = await fetch(url);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        console.log("✅ Feedback data:", data);
+        
+        if (data.success) {
+            allFeedback = data.feedback;
+            renderFeedback(data.feedback);
+            totalFeedbackCount.textContent = data.total;
+        } else {
+            console.error("❌ Failed to load feedback:", data.error);
+            showEmptyFeedback();
+        }
+    } catch (error) {
+        console.error("💥 Error loading feedback:", error);
+        showEmptyFeedback();
+    }
+}
+
+// Render feedback table
+function renderFeedback(feedbackList) {
+    feedbackTableBody.innerHTML = '';
+    
+    if (feedbackList.length === 0) {
+        showEmptyFeedback();
+        return;
+    }
+    
+    emptyFeedbackState.style.display = 'none';
+    
+    feedbackList.forEach(feedback => {
+        const row = document.createElement('tr');
+        row.style.cursor = 'pointer';
+        row.onclick = () => showFeedbackDetails(feedback);
+        
+        // Format date
+        const date = new Date(feedback.submitted_at);
+        const formattedDate = date.toLocaleDateString('en-US', { 
+            month: 'short', 
+            day: 'numeric', 
+            year: 'numeric' 
+        });
+        
+        // Format rating
+        const stars = feedback.rating 
+            ? '⭐'.repeat(feedback.rating) 
+            : 'No rating';
+        
+        // Type badge color
+        const typeColors = {
+            'suggestion': '#4CAF50',
+            'issue': '#f44336',
+            'topic': '#2196F3',
+            'praise': '#FF9800',
+            'other': '#9E9E9E'
+        };
+        
+        const typeColor = typeColors[feedback.type] || '#9E9E9E';
+        
+        row.innerHTML = `
+            <td>${feedback.name}</td>
+            <td>${feedback.email}</td>
+            <td>
+                <span class="type-badge" style="background-color: ${typeColor};">
+                    ${feedback.type}
+                </span>
+            </td>
+            <td>${stars}</td>
+            <td>${formattedDate}</td>
+        `;
+        
+        feedbackTableBody.appendChild(row);
+    });
+}
+
+// Show empty state
+function showEmptyFeedback() {
+    feedbackTableBody.innerHTML = '';
+    emptyFeedbackState.style.display = 'block';
+    totalFeedbackCount.textContent = '0';
+}
+
+// Show feedback details in modal
+function showFeedbackDetails(feedback) {
+    document.getElementById('modalUserName').textContent = feedback.name;
+    document.getElementById('modalUserEmail').textContent = feedback.email;
+    document.getElementById('modalFeedbackType').textContent = feedback.type;
+    document.getElementById('modalRating').textContent = feedback.rating 
+        ? '⭐'.repeat(feedback.rating) 
+        : 'No rating';
+    
+    const date = new Date(feedback.submitted_at);
+    document.getElementById('modalDate').textContent = date.toLocaleString('en-US', {
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric',
+        hour: 'numeric',
+        minute: '2-digit'
+    });
+    
+    document.getElementById('modalMessage').textContent = feedback.message;
+    
+    feedbackModal.style.display = 'flex';
+}
+
+// Close modal
+function closeModal() {
+    feedbackModal.style.display = 'none';
+}
+
+modalClose.addEventListener('click', closeModal);
+closeModalBtn.addEventListener('click', closeModal);
+window.addEventListener('click', (e) => {
+    if (e.target === feedbackModal) {
+        closeModal();
+    }
+});
+
+// Refresh feedback button
+refreshFeedbackBtn.addEventListener('click', () => {
+    loadFeedback(feedbackTypeFilter.value);
+});
+
+// Filter feedback by type
+feedbackTypeFilter.addEventListener('change', (e) => {
+    loadFeedback(e.target.value);
+});
+
+// ==========================================================
+// USER STATS
+// ==========================================================
+
+// Load Users Count from database
+async function loadUsersCount() {
+    try {
+        const response = await fetch('../api/get_user_stats.php');
         const data = await response.json();
         
         if (data.success) {
-            questions = data.questions;
-            renderQuestions();
+            totalUsersCount.textContent = data.total_users || 0;
         } else {
-            showMessage(data.error || 'Failed to load questions', 'error');
+            console.error("❌ Failed to load users:", data.error);
+            totalUsersCount.textContent = '0';
         }
-    } catch (err) {
-        console.error("Error loading questions:", err);
-        showMessage('Network error loading questions', 'error');
+    } catch (error) {
+        console.error("💥 Error loading users:", error);
+        totalUsersCount.textContent = '0';
     }
 }
 
-// ==========================================================
-// Render Questions Table
-// ==========================================================
-function renderQuestions() {
-    if (questions.length === 0) {
-        questionsTableBody.innerHTML = '';
-        emptyState.style.display = 'block';
-        document.querySelector('.questions-table').style.display = 'none';
-        return;
-    }
-    
-    emptyState.style.display = 'none';
-    document.querySelector('.questions-table').style.display = 'table';
-    
-    questionsTableBody.innerHTML = questions.map(q => `
-        <tr>
-            <td class="question-text">${q.question_text}</td>
-            <td><span class="category-badge">${q.category_name}</span></td>
-            <td><span class="correct-badge">Option ${q.correct_answer}</span></td>
-            <td class="action-buttons">
-                <button onclick="editQuestion(${q.id})" class="btn-edit" title="Edit">
-                    <i class="fas fa-edit"></i>
-                </button>
-                <button onclick="deleteQuestion(${q.id})" class="btn-delete" title="Delete">
-                    <i class="fas fa-trash"></i>
-                </button>
-            </td>
-        </tr>
-    `).join('');
-}
 
 // ==========================================================
-// Handle Form Submit
+// INITIAL LOAD
 // ==========================================================
-async function handleSubmit(e) {
-    e.preventDefault();
-    
-    const category = document.getElementById('questionCategory').value;
-    const questionText = document.getElementById('questionText').value.trim();
-    const optionA = document.getElementById('optionA').value.trim();
-    const optionB = document.getElementById('optionB').value.trim();
-    const optionC = document.getElementById('optionC').value.trim();
-    const optionD = document.getElementById('optionD').value.trim();
-    const correctAnswer = document.getElementById('correctAnswer').value;
-    const explanation = document.getElementById('questionExplanation').value.trim();
-    
-    if (!category || !questionText || !optionA || !optionB || !optionC || !optionD || !correctAnswer) {
-        showMessage('Please fill in all required fields', 'error');
-        return;
-    }
-    
-    const choices = [
-        { text: optionA, is_correct: correctAnswer === 'A' },
-        { text: optionB, is_correct: correctAnswer === 'B' },
-        { text: optionC, is_correct: correctAnswer === 'C' },
-        { text: optionD, is_correct: correctAnswer === 'D' }
-    ];
-    
-    const questionData = {
-        question_text: questionText,
-        category_id: getCategoryId(category),
-        explanation: explanation,
-        choices: choices
-    };
-    
-    if (editingQuestionId) {
-        questionData.id = editingQuestionId;
-        await updateQuestion(questionData);
-    } else {
-        await addQuestion(questionData);
-    }
-}
 
-// ==========================================================
-// Add Question
-// ==========================================================
-async function addQuestion(data) {
-    try {
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Adding...';
-        
-        const response = await fetch(`${API_URL}?action=add_question`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        });
-        
-        const result = await response.json();
-        
-        if (result.success) {
-            showMessage('Question added successfully!', 'success');
-            resetForm();
-            loadQuestions();
-            loadStats();
-        } else {
-            showMessage(result.error || 'Failed to add question', 'error');
-        }
-    } catch (err) {
-        console.error("Error adding question:", err);
-        showMessage('Network error', 'error');
-    } finally {
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = '<i class="fas fa-save"></i> Add Question';
-    }
-}
-
-// ==========================================================
-// Update Question
-// ==========================================================
-async function updateQuestion(data) {
-    try {
-        updateBtn.disabled = true;
-        updateBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Updating...';
-        
-        const response = await fetch(`${API_URL}?action=update_question`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        });
-        
-        const result = await response.json();
-        
-        if (result.success) {
-            showMessage('Question updated successfully!', 'success');
-            resetForm();
-            loadQuestions();
-        } else {
-            showMessage(result.error || 'Failed to update question', 'error');
-        }
-    } catch (err) {
-        console.error("Error updating question:", err);
-        showMessage('Network error', 'error');
-    } finally {
-        updateBtn.disabled = false;
-        updateBtn.innerHTML = '<i class="fas fa-edit"></i> Update Question';
-    }
-}
-
-// ==========================================================
-// Edit Question
-// ==========================================================
-window.editQuestion = function(questionId) {
-    const question = questions.find(q => q.id === questionId);
-    if (!question) return;
+document.addEventListener('DOMContentLoaded', () => {
+    console.log("🎯 Admin panel initializing...");
     
-    editingQuestionId = questionId;
+    renderQuestions();
+    loadFeedback();
+    loadUsersCount();
     
-    // Populate form
-    document.getElementById('questionCategory').value = getCategorySlug(question.category_name);
-    document.getElementById('questionText').value = question.question_text;
-    document.getElementById('questionExplanation').value = question.explanation || '';
-    
-    // Populate options
-    question.choices.forEach((choice, index) => {
-        const optionId = ['optionA', 'optionB', 'optionC', 'optionD'][index];
-        document.getElementById(optionId).value = choice.text;
-    });
-    
-    // Set correct answer
-    document.getElementById('correctAnswer').value = question.correct_answer;
-    
-    // Show update button, hide submit button
-    submitBtn.style.display = 'none';
-    updateBtn.style.display = 'inline-block';
-    
-    // Scroll to form
-    questionForm.scrollIntoView({ behavior: 'smooth' });
-}
-
-// ==========================================================
-// Delete Question
-// ==========================================================
-window.deleteQuestion = async function(questionId) {
-    if (!confirm('Are you sure you want to delete this question?')) return;
-    
-    try {
-        const response = await fetch(`${API_URL}?action=delete_question&id=${questionId}`, {
-            method: 'DELETE'
-        });
-        
-        const result = await response.json();
-        
-        if (result.success) {
-            showMessage('Question deleted successfully!', 'success');
-            loadQuestions();
-            loadStats();
-        } else {
-            showMessage(result.error || 'Failed to delete question', 'error');
-        }
-    } catch (err) {
-        console.error("Error deleting question:", err);
-        showMessage('Network error', 'error');
-    }
-}
-
-// ==========================================================
-// Reset Form
-// ==========================================================
-function resetForm() {
-    questionForm.reset();
-    editingQuestionId = null;
-    submitBtn.style.display = 'inline-block';
-    updateBtn.style.display = 'none';
-}
-
-// ==========================================================
-// Helper Functions
-// ==========================================================
-function getCategoryId(categoryName) {
-    const map = {
-        'independence': 1,
-        'colonial': 2,
-        'precolonial': 3,
-        'genocide': 4,
-        'culture': 5,
-        'liberation': 6
-    };
-    return map[categoryName] || 1;
-}
-
-function getCategorySlug(categoryName) {
-    const map = {
-        'Independence Era': 'independence',
-        'Colonial History': 'colonial',
-        'Pre-Colonial Era': 'precolonial',
-        'Genocide & Resistance': 'genocide',
-        'Culture & Heritage': 'culture',
-        'Liberation Struggles': 'liberation'
-    };
-    return map[categoryName] || '';
-}
-
-function showMessage(message, type) {
-    const alertClass = type === 'success' ? 'alert-success' : 'alert-error';
-    const icon = type === 'success' ? 'check-circle' : 'exclamation-circle';
-    
-    const alert = document.createElement('div');
-    alert.className = `alert ${alertClass}`;
-    alert.innerHTML = `<i class="fas fa-${icon}"></i> ${message}`;
-    alert.style.cssText = `
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        padding: 15px 25px;
-        border-radius: 8px;
-        z-index: 10000;
-        animation: slideIn 0.3s ease;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        background: ${type === 'success' ? '#4CAF50' : '#f44336'};
-        color: white;
-        font-weight: 500;
-    `;
-    
-    document.body.appendChild(alert);
-    
-    setTimeout(() => {
-        alert.style.animation = 'slideOut 0.3s ease';
-        setTimeout(() => alert.remove(), 300);
-    }, 3000);
-}
+    console.log("✅ Admin panel loaded successfully");
+});
