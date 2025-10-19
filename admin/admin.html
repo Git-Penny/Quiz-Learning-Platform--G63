@@ -126,6 +126,13 @@
                             <span>Registered Users</span>
                         </div>
                     </div>
+                    <div class="admin-stat-card">
+                        <i class="fas fa-comments"></i>
+                        <div>
+                            <h3 id="totalFeedbackCount">0</h3>
+                            <span>Total Feedback</span>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Question Management -->
@@ -250,7 +257,93 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Feedback Management Section -->
+                <section class="admin-feedback-section">
+                    <div class="admin-card">
+                        <div class="admin-card-header">
+                            <h3><i class="fas fa-comments"></i> User Feedback</h3>
+                            <div class="feedback-controls">
+                                <select id="feedbackTypeFilter">
+                                    <option value="">All Types</option>
+                                    <option value="suggestion">Feature Suggestion</option>
+                                    <option value="issue">Technical Issue</option>
+                                    <option value="topic">Topic Request</option>
+                                    <option value="praise">Positive Feedback</option>
+                                    <option value="other">Other</option>
+                                </select>
+                                <button id="refreshFeedback" class="btn btn-primary">
+                                    <i class="fas fa-sync-alt"></i> Refresh
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="feedback-table-container">
+                            <table class="feedback-table">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Feedback Type</th>
+                                        <th>Rating</th>
+                                        <th>Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="feedbackTableBody">
+                                    <!-- Feedback data will be populated here -->
+                                </tbody>
+                            </table>
+                            
+                            <div class="empty-state" id="emptyFeedbackState">
+                                <i class="fas fa-comment-slash"></i>
+                                <h4>No Feedback Yet</h4>
+                                <p>User feedback will appear here once submitted.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
             </section>
+
+            <!-- Feedback Modal -->
+            <div id="feedbackModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>Feedback Details</h3>
+                        <button class="modal-close">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="feedback-details">
+                            <div class="detail-row">
+                                <label>Name:</label>
+                                <span id="modalUserName"></span>
+                            </div>
+                            <div class="detail-row">
+                                <label>Email:</label>
+                                <span id="modalUserEmail"></span>
+                            </div>
+                            <div class="detail-row">
+                                <label>Type:</label>
+                                <span id="modalFeedbackType"></span>
+                            </div>
+                            <div class="detail-row">
+                                <label>Rating:</label>
+                                <span id="modalRating"></span>
+                            </div>
+                            <div class="detail-row">
+                                <label>Date:</label>
+                                <span id="modalDate"></span>
+                            </div>
+                            <div class="detail-row full-width">
+                                <label>Message:</label>
+                                <div class="feedback-message" id="modalMessage"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" id="closeModal">Close</button>
+                    </div>
+                </div>
+            </div>
         </main>
     </div>
 
