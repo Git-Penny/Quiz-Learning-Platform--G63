@@ -14,6 +14,8 @@ body {
     min-height: 100vh;
 }
 
+
+
 .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -1174,7 +1176,82 @@ footer {
 
 
 /* ===== RESPONSIVE DESIGN ===== */
+@media (max-width: 1024px) {
+    nav {
+        padding: 0 1.5rem;
+    }
+    
+    .nav-center {
+        gap: 1.5rem;
+    }
+    
+    .nav-center a {
+        padding: 0.5rem 0.9rem;
+        font-size: 0.95rem;
+    }
+    
+    .auth-btn {
+        padding: 7px 16px;
+        font-size: 0.95rem;
+    }
+    
+    .logo span {
+        font-size: 28px;
+    }
+
+    .container {
+        padding: 0 1.5rem;
+    }
+}
+
+
 @media (max-width: 768px) {
+    nav {
+        padding: 0 1rem;
+        flex-wrap: wrap;
+        height: auto;
+        min-height: 70px;
+    }
+    
+    .logo {
+        margin-right: auto;
+    }
+    
+    .logo span {
+        font-size: 26px;
+    }
+    
+    .nav-center {
+        display: none; /* Hide center nav - dropdown will handle categories */
+    }
+    
+    .nav-right {
+        margin-left: auto;
+    }
+    
+    .auth-btn {
+        padding: 6px 14px;
+        font-size: 0.9rem;
+    }
+    
+     .dropdown {
+        position: static;
+    }
+    
+    .dropdown-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        min-width: auto;
+        width: 100%;
+        border-radius: 0 0 12px 12px;
+    }
+
+    .container {
+        padding: 0 1rem;
+    }
+
     .preview-content {
         grid-template-columns: 1fr;
         gap: 2rem;
@@ -1187,6 +1264,10 @@ footer {
     .features-grid,
     .category-grid {
         grid-template-columns: 1fr;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(4, 1fr);
     }
     
     .cta-buttons {
@@ -1250,10 +1331,31 @@ footer {
 
 }
 
-@media (max-width: 480px) {
+@media (max-width: 480px) { 
+    nav {
+        padding: 0.5rem 1rem;
+    }
+
     .nav-center {
         flex-direction: column;
-        gap: 1rem;
+        gap: 2rem;
+    }
+
+    .logo span {
+            font-size: 35px;
+    }
+
+    .logo img {
+        display: none;
+    }
+    
+    .auth-btn {
+        padding: 5px 12px;
+        font-size: 0.2rem;
+    }
+
+    .auth-btn i {
+        display: none;
     }
     
     .dropdown-menu {
@@ -1263,8 +1365,39 @@ footer {
         transform: none;
         box-shadow: none;
         background: transparent;
-    }   
+        left: 0;
+        right: 0;
+        width: 100%;
+    }
+
+    .nav-right {
+        gap: 0.5rem;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .cta-buttons .btn.btn-primary{
+        height: 67px;
+        border-radius: 32px;
+        border: #4055c9 2px solid;
+        font-size: 1rem !important;
+    }
+
+    .container{
+        padding: 0 1rem;
+
+    }
+
+    .stat-item p{
+        font-size: 0.86rem;
+    }
     
+    .stat-item h3 {
+        font-size: 1.3rem;
+    }
+
     .feedback-section {
         padding: 40px 0;
         margin: 1rem auto;
@@ -1297,16 +1430,19 @@ footer {
 
     /*forgot password page*/
     @media (max-width: 480px) {
-    .auth-wrapper[style*="width: 500px"] .form-group input {
-        height: 55px !important;
-        font-size: 1rem !important;
+        .auth-wrapper[style*="width: 500px"] .form-group input {
+            height: 55px !important;
+            font-size: 1rem !important;
+        }
+        
+        .auth-wrapper[style*="width: 500px"] .submit-btn {
+            height: 55px !important;
+            font-size: 1.1rem !important;
+        }   
     }
-    
-    .auth-wrapper[style*="width: 500px"] .submit-btn {
-        height: 55px !important;
-        font-size: 1.1rem !important;
-    }
+}
 
-    
-}
-}
+/*html, body {
+    overflow-x: hidden;
+    max-width: 100%;
+}*/
