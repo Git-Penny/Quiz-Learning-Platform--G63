@@ -13,7 +13,7 @@ require_once __DIR__ . '/../config/db.php';
 
 // Check database connection
 if (!$conn) {
-    echo json_encode(["error" => "Database connection failed"]);
+    echo json_encode(["success" => false, "error" => "Database connection failed"]);
     exit;
 }
 
@@ -48,9 +48,9 @@ $query = "
         ROUND(AVG(ua.score / ua.total_questions * 100), 1) as avg_accuracy,
         MAX(ua.completed_at) as last_quiz_date
     FROM users u
-    LEFT JOIN user_attempts ua ON u.id = ua.user_id
-    WHERE (u.is_active = 1 OR u.is_active IS NULL) $dateCondition
-    GROUP BY u.id
+    INNER JOIN user_attempts ua ON u.id = ua.user_id
+    WHERE 1=1 $dateCondition
+    GROUP BY u.id, u.username, u.full_name, u.profile_image
     HAVING quizzes_taken > 0
     ORDER BY total_score DESC, avg_accuracy DESC
     LIMIT 100
@@ -60,6 +60,7 @@ $result = mysqli_query($conn, $query);
 
 if (!$result) {
     echo json_encode([
+        "success" => false,
         "error" => "Query failed", 
         "details" => mysqli_error($conn)
     ]);
