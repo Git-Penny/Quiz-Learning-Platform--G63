@@ -142,7 +142,6 @@ document.addEventListener("DOMContentLoaded", () => {
       type: "suggestion",
       rating: "5/5",
       date: "2025-10-15",
-      message: "Add a timer to quizzes for more challenge!",
     },
     {
       name: "Piet Pompies",
@@ -150,7 +149,6 @@ document.addEventListener("DOMContentLoaded", () => {
       type: "praise",
       rating: "4/5",
       date: "2025-10-16",
-      message: "Love the design and the history content!",
     },
   ];
 
