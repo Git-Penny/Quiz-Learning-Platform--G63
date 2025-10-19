@@ -28,40 +28,6 @@ if (dropdownToggle) {
   });
 }
 
-const feedbackForm = document.querySelector('.feedback-form');
-
-if (feedbackForm) {
-  feedbackForm.addEventListener('submit', e => {
-    e.preventDefault();
-
-    const name = feedbackForm.querySelector('input[type="text"]').value.trim();
-    const email = feedbackForm.querySelector('input[type="email"]').value.trim();
-    const type = feedbackForm.querySelector('select').value;
-    const message = feedbackForm.querySelector('textarea').value.trim();
-    const rating = feedbackForm.querySelector('input[name="rating"]:checked')?.value || "Not Rated";
-
-    if (!name || !email || !type || !message) {
-      alert('❌ Please fill out all fields before submitting.');
-      return;
-    }
-
-    
-    const feedbackData = JSON.parse(localStorage.getItem('feedbacks')) || [];
-    feedbackData.push({
-      name,
-      email,
-      type,
-      message,
-      rating,
-      date: new Date().toLocaleString()
-    });
-    localStorage.setItem('feedbacks', JSON.stringify(feedbackData));
-
-    alert('✅ Thank you for your feedback!');
-    feedbackForm.reset();
-  });
-}
-
 // Updated auth functionality for the new HTML structure
 function updateAuthUI() {
   const currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -121,3 +87,121 @@ document.addEventListener('DOMContentLoaded', () => {
   updateAuthUI();
   setupLogoutHandlers();
 });
+
+// ==========================================================
+// FEEDBACK FORM HANDLER - FIXED VERSION
+// ==========================================================
+
+console.log("🔄 Loading feedback handler...");
+
+document.addEventListener('DOMContentLoaded', function() {
+    const feedbackForm = document.querySelector('.feedback-form');
+    
+    if (!feedbackForm) {
+        console.log("ℹ️ No feedback form on this page");
+        return;
+    }
+    
+    console.log("✅ Feedback form found, attaching handler");
+    
+    feedbackForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        console.log("📤 Feedback form submitted");
+        
+        // Get all form fields
+        const nameInput = feedbackForm.querySelector('input[type="text"]');
+        const emailInput = feedbackForm.querySelector('input[type="email"]');
+        const typeSelect = feedbackForm.querySelector('select');
+        const messageTextarea = feedbackForm.querySelector('textarea');
+        const ratingInput = feedbackForm.querySelector('input[name="rating"]:checked');
+        
+        const name = nameInput ? nameInput.value.trim() : '';
+        const email = emailInput ? emailInput.value.trim() : '';
+        const type = typeSelect ? typeSelect.value : '';
+        const message = messageTextarea ? messageTextarea.value.trim() : '';
+        const rating = ratingInput ? parseInt(ratingInput.value) : null;
+        
+        console.log("📋 Form data:", { name, email, type, message, rating });
+        
+        // Validate
+        if (!name || !email || !type || !message) {
+            alert('❌ Please fill out all required fields.');
+            return;
+        }
+        
+        // Validate email
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            alert('❌ Please enter a valid email address.');
+            return;
+        }
+        
+        // Get submit button
+        const submitBtn = feedbackForm.querySelector('button[type="submit"]');
+        const originalBtnText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+        submitBtn.disabled = true;
+        
+        try {
+            console.log("📡 Sending to API: api/submit_feedback.php");
+            
+            const response = await fetch('api/submit_feedback.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: name,
+                    email: email,
+                    type: type,
+                    message: message,
+                    rating: rating
+                })
+            });
+            
+            console.log("📨 Response status:", response.status);
+            console.log("📨 Response headers:", response.headers.get('content-type'));
+            
+            const responseText = await response.text();
+            console.log("📨 Raw response:", responseText);
+            
+            let data;
+            try {
+                data = JSON.parse(responseText);
+            } catch (parseError) {
+                console.error("❌ JSON parse error:", parseError);
+                console.error("Response was:", responseText);
+                throw new Error("Server returned invalid JSON");
+            }
+            
+            console.log("✅ Parsed response:", data);
+            
+            if (data.success) {
+                alert('✅ Thank you for your feedback! Your message has been received.');
+                
+                // Reset form
+                feedbackForm.reset();
+                
+                // Uncheck all star ratings
+                feedbackForm.querySelectorAll('input[name="rating"]').forEach(function(radio) {
+                    radio.checked = false;
+                });
+                
+                console.log("✅ Feedback submitted successfully, ID:", data.feedback_id);
+            } else {
+                alert('❌ Error: ' + (data.error || 'Failed to submit feedback'));
+                console.error("Server error:", data.error);
+            }
+            
+        } catch (err) {
+            console.error("💥 Error submitting feedback:", err);
+            alert('❌ Network error. Please check your internet connection and try again.');
+        } finally {
+            // Restore button
+            submitBtn.innerHTML = originalBtnText;
+            submitBtn.disabled = false;
+        }
+    });
+});
+
+console.log("✅ Feedback handler loaded");
