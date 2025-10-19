@@ -1,152 +1,215 @@
-// Admin Panel Functionality
-// Select elements
-const form = document.getElementById('questionForm');
-const resetFormBtn = document.getElementById('resetForm');
-const submitBtn = document.getElementById('submitQuestion');
-const updateBtn = document.getElementById('updateQuestion');
-const questionCategory = document.getElementById('questionCategory');
-const questionText = document.getElementById('questionText');
-const optionA = document.getElementById('optionA');
-const optionB = document.getElementById('optionB');
-const optionC = document.getElementById('optionC');
-const optionD = document.getElementById('optionD');
-const correctAnswer = document.getElementById('correctAnswer');
-const questionExplanation = document.getElementById('questionExplanation');
-const questionsTableBody = document.getElementById('questionsTableBody');
-const emptyQuestionsState = document.getElementById('emptyQuestionsState');
-const searchQuestions = document.getElementById('searchQuestions');
-const filterCategory = document.getElementById('filterCategory');
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("questionForm");
+  const resetBtn = document.getElementById("resetForm");
+  const submitBtn = document.getElementById("submitQuestion");
+  const updateBtn = document.getElementById("updateQuestion");
+  const tableBody = document.getElementById("questionsTableBody");
+  const emptyState = document.getElementById("emptyQuestionsState");
+  const totalQuestionsCount = document.getElementById("totalQuestionsCount");
+  const totalFeedbackCount = document.getElementById("totalFeedbackCount");
 
-// Stats
-const totalQuestionsCount = document.getElementById('totalQuestionsCount');
-const totalUsersCount = document.getElementById('totalUsersCount');
+  const feedbackTable = document.getElementById("feedbackTableBody");
+  const emptyFeedbackState = document.getElementById("emptyFeedbackState");
+  const feedbackTypeFilter = document.getElementById("feedbackTypeFilter");
+  const refreshFeedback = document.getElementById("refreshFeedback");
 
-// Load from localStorage
-let questions = JSON.parse(localStorage.getItem('quizr_questions')) || [];
-let editIndex = null;
+  const modal = document.getElementById("feedbackModal");
+  const modalClose = document.querySelector(".modal-close");
+  const modalCloseBtn = document.getElementById("closeModal");
 
-// Render Questions Table
-function renderQuestions(filter = '', search = '') {
-    questionsTableBody.innerHTML = '';
+  const feedbackBox = document.createElement("div");
+  feedbackBox.id = "feedbackBox";
+  document.body.appendChild(feedbackBox);
 
-    let filtered = questions.filter(q => {
-        const matchesCategory = filter ? q.category === filter : true;
-        const matchesSearch = search
-            ? q.text.toLowerCase().includes(search.toLowerCase())
-            : true;
-        return matchesCategory && matchesSearch;
-    });
+  function showFeedback(message, type = "info") {
+    feedbackBox.textContent = message;
+    feedbackBox.className = `feedback ${type}`;
+    feedbackBox.style.opacity = "1";
+    feedbackBox.style.transform = "translateY(0)";
+    setTimeout(() => {
+      feedbackBox.style.opacity = "0";
+      feedbackBox.style.transform = "translateY(-20px)";
+    }, 3000);
+  }
 
-    if (filtered.length === 0) {
-        emptyQuestionsState.style.display = 'block';
-    } else {
-        emptyQuestionsState.style.display = 'none';
+  let questions = JSON.parse(localStorage.getItem("quizrQuestions")) || [];
+  let editIndex = null;
+
+  function renderQuestions() {
+    tableBody.innerHTML = "";
+    if (questions.length === 0) {
+      emptyState.style.display = "block";
+      totalQuestionsCount.textContent = "0";
+      return;
     }
 
-    filtered.forEach((q, index) => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${q.text}</td>
-            <td>${q.category}</td>
-            <td>${q.correctAnswer}</td>
-            <td>
-                <button class="btn btn-small btn-success" onclick="editQuestion(${index})"><i class="fas fa-edit"></i></button>
-                <button class="btn btn-small btn-danger" onclick="deleteQuestion(${index})"><i class="fas fa-trash"></i></button>
-            </td>
-        `;
-        questionsTableBody.appendChild(row);
-    });
-
+    emptyState.style.display = "none";
     totalQuestionsCount.textContent = questions.length;
-}
 
-// Add Question
-form.addEventListener('submit', e => {
+    questions.forEach((q, index) => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${q.text}</td>
+        <td>${q.category}</td>
+        <td>${q.correct}</td>
+        <td class="actions">
+          <button class="btn btn-small btn-edit" data-index="${index}">
+            <i class="fas fa-edit"></i>
+          </button>
+          <button class="btn btn-small btn-delete" data-index="${index}">
+            <i class="fas fa-trash"></i>
+          </button>
+        </td>`;
+      tableBody.appendChild(tr);
+    });
+  }
+
+  function resetForm() {
+    form.reset();
+    updateBtn.style.display = "none";
+    submitBtn.style.display = "inline-flex";
+    editIndex = null;
+  }
+
+  form.addEventListener("submit", (e) => {
     e.preventDefault();
 
-    const newQuestion = {
-        category: questionCategory.value.trim(),
-        text: questionText.value.trim(),
-        options: {
-            A: optionA.value.trim(),
-            B: optionB.value.trim(),
-            C: optionC.value.trim(),
-            D: optionD.value.trim(),
-        },
-        correctAnswer: correctAnswer.value,
-        explanation: questionExplanation.value.trim(),
+    const question = {
+      category: document.getElementById("questionCategory").value,
+      text: document.getElementById("questionText").value,
+      options: {
+        A: document.getElementById("optionA").value,
+        B: document.getElementById("optionB").value,
+        C: document.getElementById("optionC").value,
+        D: document.getElementById("optionD").value,
+      },
+      correct: document.getElementById("correctAnswer").value,
+      explanation: document.getElementById("questionExplanation").value,
     };
 
     if (editIndex === null) {
-        questions.push(newQuestion);
-        alert('✅ Question added successfully!');
+      questions.push(question);
+      showFeedback("✅ Question added successfully!", "success");
     } else {
-        questions[editIndex] = newQuestion;
-        editIndex = null;
-        updateBtn.style.display = 'none';
-        submitBtn.style.display = 'inline-block';
-        alert('✅ Question updated successfully!');
+      questions[editIndex] = question;
+      showFeedback("✏️ Question updated successfully!", "success");
+      editIndex = null;
     }
 
-    localStorage.setItem('quizr_questions', JSON.stringify(questions));
+    localStorage.setItem("quizrQuestions", JSON.stringify(questions));
     renderQuestions();
-    form.reset();
-});
+    resetForm();
+  });
 
-// Edit Question
-window.editQuestion = function (index) {
-    const q = questions[index];
-    questionCategory.value = q.category;
-    questionText.value = q.text;
-    optionA.value = q.options.A;
-    optionB.value = q.options.B;
-    optionC.value = q.options.C;
-    optionD.value = q.options.D;
-    correctAnswer.value = q.correctAnswer;
-    questionExplanation.value = q.explanation;
+  resetBtn.addEventListener("click", resetForm);
 
-    editIndex = index;
-    updateBtn.style.display = 'inline-block';
-    submitBtn.style.display = 'none';
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-};
+  tableBody.addEventListener("click", (e) => {
+    if (e.target.closest(".btn-edit")) {
+      const index = e.target.closest(".btn-edit").dataset.index;
+      const q = questions[index];
 
-// Delete Question
-window.deleteQuestion = function (index) {
-    if (confirm('Are you sure you want to delete this question?')) {
+      document.getElementById("questionCategory").value = q.category;
+      document.getElementById("questionText").value = q.text;
+      document.getElementById("optionA").value = q.options.A;
+      document.getElementById("optionB").value = q.options.B;
+      document.getElementById("optionC").value = q.options.C;
+      document.getElementById("optionD").value = q.options.D;
+      document.getElementById("correctAnswer").value = q.correct;
+      document.getElementById("questionExplanation").value = q.explanation;
+
+      editIndex = index;
+      submitBtn.style.display = "none";
+      updateBtn.style.display = "inline-flex";
+    }
+
+    if (e.target.closest(".btn-delete")) {
+      const index = e.target.closest(".btn-delete").dataset.index;
+      if (confirm("Are you sure you want to delete this question?")) {
         questions.splice(index, 1);
-        localStorage.setItem('quizr_questions', JSON.stringify(questions));
+        localStorage.setItem("quizrQuestions", JSON.stringify(questions));
         renderQuestions();
+        showFeedback("🗑️ Question deleted.", "error");
+      }
     }
-};
+  });
 
-// Reset Form
-resetFormBtn.addEventListener('click', () => {
-    form.reset();
-    editIndex = null;
-    updateBtn.style.display = 'none';
-    submitBtn.style.display = 'inline-block';
-});
+  renderQuestions();
 
-// Search and Filter
-searchQuestions.addEventListener('input', e => {
-    renderQuestions(filterCategory.value, e.target.value);
-});
+  let feedbackList = [
+    {
+      name: "Peter Pan",
+      email: "peter@gmail.com",
+      type: "suggestion",
+      rating: "5/5",
+      date: "2025-10-15",
+      message: "Add a timer to quizzes for more challenge!",
+    },
+    {
+      name: "Piet Pompies",
+      email: "piet@gmail.com",
+      type: "praise",
+      rating: "4/5",
+      date: "2025-10-16",
+      message: "Love the design and the history content!",
+    },
+  ];
 
-filterCategory.addEventListener('change', e => {
-    renderQuestions(e.target.value, searchQuestions.value);
-});
+  function renderFeedback(filter = "") {
+    feedbackTable.innerHTML = "";
+    let data = feedbackList;
 
+    if (filter) data = data.filter((f) => f.type === filter);
 
-// Load Users Count (Fake Data)
-function loadUsersCount() {
-    // Simulate fetching user data (can replace with real DB)
-    const users = JSON.parse(localStorage.getItem('quizr_users')) || [];
-    totalUsersCount.textContent = users.length;
-}
+    if (data.length === 0) {
+      emptyFeedbackState.style.display = "block";
+      totalFeedbackCount.textContent = "0";
+      return;
+    }
 
-// Initial Load
-document.addEventListener('DOMContentLoaded', () => {
-    renderQuestions();
-    loadUsersCount();
+    emptyFeedbackState.style.display = "none";
+    totalFeedbackCount.textContent = data.length;
+
+    data.forEach((f) => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${f.name}</td>
+        <td>${f.email}</td>
+        <td>${f.type}</td>
+        <td>${f.rating}</td>
+        <td>${f.date}</td>`;
+      tr.addEventListener("click", () => openFeedbackModal(f));
+      feedbackTable.appendChild(tr);
+    });
+  }
+
+  feedbackTypeFilter.addEventListener("change", () => {
+    renderFeedback(feedbackTypeFilter.value);
+  });
+
+  refreshFeedback.addEventListener("click", () => {
+    showFeedback("🔄 Feedback refreshed!", "info");
+    renderFeedback(feedbackTypeFilter.value);
+  });
+
+  function openFeedbackModal(feedback) {
+    modal.classList.add("show");
+    document.getElementById("modalUserName").textContent = feedback.name;
+    document.getElementById("modalUserEmail").textContent = feedback.email;
+    document.getElementById("modalFeedbackType").textContent = feedback.type;
+    document.getElementById("modalRating").textContent = feedback.rating;
+    document.getElementById("modalDate").textContent = feedback.date;
+    document.getElementById("modalMessage").textContent = feedback.message;
+  }
+
+  function closeModal() {
+    modal.classList.remove("show");
+  }
+
+  modalClose.addEventListener("click", closeModal);
+  modalCloseBtn.addEventListener("click", closeModal);
+  window.addEventListener("click", (e) => {
+    if (e.target === modal) closeModal();
+  });
+
+  renderFeedback();
 });
