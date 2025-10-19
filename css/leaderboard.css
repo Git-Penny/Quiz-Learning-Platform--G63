@@ -169,7 +169,7 @@
 
 .winner-score {
     font-weight: bold;
-    color: #667eea;
+    color: #b0b1b6;
     font-size: 1.1rem;
 }
 
@@ -278,7 +278,8 @@
 }
 
 .badge-gold {
-    background: #D4AF37;
+    background: #FFD700;
+;
 }
 
 .badge-silver {
@@ -359,6 +360,7 @@
     }
     
     .top-winners {
+       grid-template-columns: 1fr 1fr 1fr ;
         gap: 1rem;
     }
 }
@@ -373,7 +375,7 @@
     }
     
     .top-winners {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr 1fr 1fr;
         gap: 1.5rem;
     }
     
@@ -419,6 +421,10 @@
     .leaderboard-table td {
         padding: 0.5rem;
         font-size: 0.9rem;
+    }
+
+    .top-winners {
+        grid-template-columns: 1fr 1fr 1fr ;
     }
     
     .player-cell {

@@ -108,24 +108,51 @@
                     </div>
                 </div>
 
-                <!-- Top 3 Winners (Will be populated dynamically) -->
+                <!-- Top 3 Winners -->
                 <div class="top-winners" id="topWinners">
-                    <div class="empty-state">
-                        <i class="fas fa-trophy"></i>
-                        <h3>No Leaderboard Data Yet</h3>
-                        <p>Be the first to complete a quiz and appear on the leaderboard!</p>
-                        <a href="dashboard.html" class="btn btn-primary">Take Your First Quiz</a>
+                    <!-- Second Place -->
+                    <div class="winner-card second-place">
+                        <div class="winner-rank">2</div>
+                        <div class="winner-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="winner-info">
+                            <h3>John Kahumba</h3>
+                            <div class="winner-score">89 points</div>
+                            <div class="winner-accuracy">89.0% accuracy</div>
+                        </div>
+                    </div>
+
+                    <!-- First Place -->
+                    <div class="winner-card first-place">
+                        <div class="winner-rank">1</div>
+                        <div class="winner-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="winner-info">
+                            <h3>Sarah Ndapandula</h3>
+                            <div class="winner-score">100 points</div>
+                            <div class="winner-accuracy">100.0% accuracy</div>
+                        </div>
+                    </div>
+
+                    <!-- Third Place -->
+                    <div class="winner-card third-place">
+                        <div class="winner-rank">3</div>
+                        <div class="winner-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="winner-info">
+                            <h3>Maria Shifidi</h3>
+                            <div class="winner-score">76 points</div>
+                            <div class="winner-accuracy">84.4% accuracy</div>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Leaderboard Table -->
                 <div class="leaderboard-table-container">
-                    <div class="empty-state">
-                        <i class="fas fa-users"></i>
-                        <h3>No Players Yet</h3>
-                        <p>Complete quizzes to see your ranking here</p>
-                    </div>
-                    <table class="leaderboard-table" style="display: none;">
+                    <table class="leaderboard-table">
                         <thead>
                             <tr>
                                 <th>Rank</th>
@@ -137,7 +164,120 @@
                             </tr>
                         </thead>
                         <tbody id="leaderboardBody">
-                            <!-- Leaderboard data will be populated by JavaScript from real data -->
+                            <tr>
+                                <td class="rank-cell">1</td>
+                                <td>
+                                    <div class="player-cell">
+                                        <div class="player-avatar">SN</div>
+                                        <div class="player-name">Sarah Ndapandula</div>
+                                    </div>
+                                </td>
+                                <td class="points-cell">100</td>
+                                <td>10</td>
+                                <td class="accuracy-cell">100.0%</td>
+                                <td class="badges-cell">
+                                    <div class="badge badge-gold"><i class="fas fa-crown"></i></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="rank-cell">2</td>
+                                <td>
+                                    <div class="player-cell">
+                                        <div class="player-avatar">JK</div>
+                                        <div class="player-name">John Kahumba</div>
+                                    </div>
+                                </td>
+                                <td class="points-cell">89</td>
+                                <td>10</td>
+                                <td class="accuracy-cell">89.0%</td>
+                                <td class="badges-cell">
+                                    <div class="badge badge-silver"><i class="fas fa-medal"></i></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="rank-cell">3</td>
+                                <td>
+                                    <div class="player-cell">
+                                        <div class="player-avatar">MS</div>
+                                        <div class="player-name">Maria Shifidi</div>
+                                    </div>
+                                </td>
+                                <td class="points-cell">76</td>
+                                <td>9</td>
+                                <td class="accuracy-cell">84.4%</td>
+                                <td class="badges-cell">
+                                    <div class="badge badge-bronze"><i class="fas fa-medal"></i></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="rank-cell">4</td>
+                                <td>
+                                    <div class="player-cell">
+                                        <div class="player-avatar">DN</div>
+                                        <div class="player-name">David Nujoma</div>
+                                    </div>
+                                </td>
+                                <td class="points-cell">64</td>
+                                <td>8</td>
+                                <td class="accuracy-cell">80.0%</td>
+                                <td class="badges-cell">
+                                    <div class="badge badge-star"><i class="fas fa-star"></i></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="rank-cell">5</td>
+                                <td>
+                                    <div class="player-cell">
+                                        <div class="player-avatar">EH</div>
+                                        <div class="player-name">Emma Hamutenya</div>
+                                    </div>
+                                </td>
+                                <td class="points-cell">52</td>
+                                <td>7</td>
+                                <td class="accuracy-cell">74.3%</td>
+                                <td class="badges-cell">
+                                    <div class="badge badge-star"><i class="fas fa-star"></i></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="rank-cell">6</td>
+                                <td>
+                                    <div class="player-cell">
+                                        <div class="player-avatar">PN</div>
+                                        <div class="player-name">Peter Nghipunya</div>
+                                    </div>
+                                </td>
+                                <td class="points-cell">42</td>
+                                <td>6</td>
+                                <td class="accuracy-cell">70.0%</td>
+                                <td class="badges-cell"></td>
+                            </tr>
+                            <tr>
+                                <td class="rank-cell">7</td>
+                                <td>
+                                    <div class="player-cell">
+                                        <div class="player-avatar">AT</div>
+                                        <div class="player-name">Anna Tjongarero</div>
+                                    </div>
+                                </td>
+                                <td class="points-cell">30</td>
+                                <td>5</td>
+                                <td class="accuracy-cell">60.0%</td>
+                                <td class="badges-cell"></td>
+                            </tr>
+                            <tr>
+                                <td class="rank-cell">8</td>
+                                <td>
+                                    <div class="player-cell">
+                                        <div class="player-avatar">MS</div>
+                                        <div class="player-name">Michael Shikongo</div>
+                                    </div>
+                                </td>
+                                <td class="points-cell">20</td>
+                                <td>4</td>
+                                <td class="accuracy-cell">50.0%</td>
+                                <td class="badges-cell"></td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -156,9 +296,7 @@
         </main>
     </div>
     
-    
-    <script src="js/leaderboard.js">
-    
+    <script>
         // Basic sidebar functionality
         const mobileHamburger = document.getElementById('mobileHamburger');
         const desktopHamburger = document.getElementById('desktopHamburger');
@@ -181,6 +319,19 @@
         if (desktopHamburger) desktopHamburger.addEventListener('click', toggleSidebar);
         if (overlay) overlay.addEventListener('click', () => {
             if (window.innerWidth <= 1024) toggleSidebar();
+        });
+
+        // Filter button functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            filterButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Remove active class from all buttons
+                    filterButtons.forEach(b => b.classList.remove('active'));
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                });
+            });
         });
     </script>
 
