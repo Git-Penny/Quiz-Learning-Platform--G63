@@ -150,6 +150,20 @@ document.addEventListener("DOMContentLoaded", () => {
       rating: "4/5",
       date: "2025-10-16",
     },
+     {
+      name: "Sarah Ndapandula",
+      email: "Sarah@gmail.com",
+      type: "praise",
+      rating: "5/5",
+      date: "2025-10-14",
+    },
+    {
+      name: "John Kahumba",
+      email: "John@gmail.com",
+      type: "request",
+      rating: "3/5",
+      date: "2025-10-17",
+    },
   ];
 
   function renderFeedback(filter = "") {
