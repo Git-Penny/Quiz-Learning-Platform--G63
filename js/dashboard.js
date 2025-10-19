@@ -92,32 +92,40 @@ document.addEventListener('DOMContentLoaded', async () => {
 function updateDashboardStats(stats) {
     console.log("📊 Updating dashboard stats:", stats);
     
-    // Update total quizzes
-    const quizzesEl = document.getElementById('totalQuizzes');
+    // Update quizzes completed (using class selector from your HTML)
+    const quizzesEl = document.querySelector('.stat-completed');
     if (quizzesEl) {
         quizzesEl.textContent = stats.quizzes_taken || 0;
         console.log("✅ Quizzes updated:", stats.quizzes_taken);
+    } else {
+        console.warn("❌ .stat-completed element not found");
     }
     
-    // Update total score
-    const scoreEl = document.getElementById('totalScore');
-    if (scoreEl) {
-        scoreEl.textContent = stats.total_score || 0;
-        console.log("✅ Score updated:", stats.total_score);
+    // Update average score (using class selector from your HTML)
+    const averageEl = document.querySelector('.stat-average');
+    if (averageEl) {
+        averageEl.textContent = `${stats.avg_accuracy || 0}%`;
+        console.log("✅ Average score updated:", stats.avg_accuracy);
+    } else {
+        console.warn("❌ .stat-average element not found");
     }
     
-    // Update average accuracy
-    const accuracyEl = document.getElementById('avgAccuracy');
-    if (accuracyEl) {
-        accuracyEl.textContent = `${stats.avg_accuracy || 0}%`;
-        console.log("✅ Accuracy updated:", stats.avg_accuracy);
+    // Update day streak (using class selector from your HTML)
+    const streakEl = document.querySelector('.stat-streak');
+    if (streakEl) {
+        streakEl.textContent = 0; // You don't have streak tracking yet
+        console.log("✅ Streak updated");
+    } else {
+        console.warn("❌ .stat-streak element not found");
     }
     
-    // Update rank
-    const rankEl = document.getElementById('userRank');
-    if (rankEl) {
-        rankEl.textContent = `#${stats.rank || 'N/A'}`;
-        console.log("✅ Rank updated:", stats.rank);
+    // Also update progress view metrics
+    const progressMetrics = document.querySelectorAll('.progress-metric .metric-value');
+    if (progressMetrics.length >= 3) {
+        progressMetrics[0].textContent = `${stats.avg_accuracy || 0}%`; // Mastery Level
+        progressMetrics[1].textContent = stats.quizzes_taken || 0; // Quizzes Taken
+        progressMetrics[2].textContent = 0; // Day Streak
+        console.log("✅ Progress metrics updated");
     }
     
     console.log("✅ Dashboard stats updated successfully");
